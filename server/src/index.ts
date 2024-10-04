@@ -1,30 +1,17 @@
-import express, { json } from "express";
+import express, { json, urlencoded } from "express";
 import * as mongoose from "mongoose";
 
-import { UserDataModel } from "./models/userData.models.js";
+import userDataRouter from "./routes/userData.route.js";
 
 const port = 1337;
 const app = express();
 
+// middleware
 app.use(json());
+app.use(urlencoded({ extended: false }));
 
-app.post('/api/userdata', async (req, res) => {
-    try {
-        const userData = await UserDataModel.create(req.body);
-        res.status(200).json(userData);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-});
-
-app.get('/api/userdata', async (req, res) => {
-    try {
-        const userData = await UserDataModel.find(req.body);
-        res.status(200).json(userData);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-});
+// routes
+app.use("/api/userdata", userDataRouter);
 
 mongoose.connect("mongodb://172.24.48.1:27017/test")
 .then(() => {
