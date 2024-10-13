@@ -1,4 +1,4 @@
-import * as mongoose from "mongoose";
+import * as mongoose from 'mongoose';
 
 // Interface für das Schema, um Typen in TypeScript zu definieren
 interface Address {
@@ -51,7 +51,7 @@ const UserSchema = new mongoose.Schema({
 },
 { 
     timestamps: true,
-    collection: "userData"
+    collection: 'userData'
 }); // Fügt createdAt und updatedAt hinzu
 
 // Modell exportieren
