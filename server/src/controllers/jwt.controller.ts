@@ -3,28 +3,31 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
 import { UserDataModel } from '../models/userData.model.js';
+import { tokenModel } from '../models/token.model.js';
 
 dotenv.config();
 
-// not for productional environment -> use DB instead
-let refreshTokens = [];
-
 export const authenticateUser = async (req: any, res: any) => {
-    // ToDo authenticate User
-    try {        
+    try {
+        // find user by email
         const userData = await UserDataModel.findOne({ email: req.body.email });
 
         if (userData === null || userData === undefined)
             return res.status(400).send('User not found');
 
+        // authenticate user
         if (await bcrypt.compare(req.body.password, userData.password)) {
             const user = { email: userData.email };
     
             const accessToken = generateAccessToken(user);
             const refreshToken = generateRefreshToken(user);
     
-            // save refresh token -> use DB for prod environment
-            refreshTokens.push(refreshToken);
+            // save refresh token
+            try {
+                await tokenModel.create({ refreshToken: refreshToken });
+            } catch (error) {
+                res.status(500).json({ message: error.message });
+            }
     
             res.status(200).json({ accessToken: accessToken, refreshToken: refreshToken });
         }
@@ -54,9 +57,8 @@ export const refreshToken = async (req: any, res: any ) => {
     const refreshToken = req.body.token;
 
     if (refreshToken === null || refreshToken === undefined) return res.sendStatus(401); // return unauthorized if there is no token
-    // for prod check the DB instead
-    if (!refreshTokens.includes(refreshToken)) return res.sendStatus(403); // return forbidden if the given token not exists
-    
+    if (!tokenModel.findOne({ refreshToken: refreshToken })) return res.sendStatus(403); // return forbidden if the given token not exists
+
     jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err: any, user: any) => {
         if (err) return res.sendStatus(403);
         const accessToken = generateAccessToken({ email: user.email });
@@ -65,9 +67,14 @@ export const refreshToken = async (req: any, res: any ) => {
 }
 
 export const deleteRefreshToken = async (req: any, res: any) => {
-    // for prod set it to the DB
-    refreshTokens = refreshTokens.filter(token => token !== req.body.token); // delete active refreshtoken
-    res.sendStatus(204);
+    // delete active refreshtoken
+    try {
+        const token = await tokenModel.findOneAndDelete({ refreshToken: req.body.token });
+        console.log(`Token ${token._id.toString()} successfully deleted`);
+        res.sendStatus(204)
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
 }
 
 function generateAccessToken(user: any) {
@@ -75,5 +82,5 @@ function generateAccessToken(user: any) {
 }
 
 function generateRefreshToken(user: any) {
-    return jwt.sign(user, process.env.REFRESH_TOKEN_SECRET);
+    return jwt.sign(user, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '30d' });
 }
