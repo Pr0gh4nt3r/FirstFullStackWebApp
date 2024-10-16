@@ -70,7 +70,6 @@ export const deleteRefreshToken = async (req: any, res: any) => {
     // delete active refreshtoken
     try {
         const token = await tokenModel.findOneAndDelete({ refreshToken: req.body.token });
-        console.log(`Token ${token._id.toString()} successfully deleted`);
         res.sendStatus(204)
     } catch (error) {
         res.status(500).json({ message: error.message });
