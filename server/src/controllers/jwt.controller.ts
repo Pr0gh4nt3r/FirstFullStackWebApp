@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt';
 
 import UserModel from '../models/user.model.js';
 import tokenModel from '../models/token.model.js';
-import { getAccessTokenSecret } from '../helpers/tokenSecret.js';
+import { getAccessTokenSecret, getRefreshTokenSecret } from '../helpers/tokenSecret.js';
 
 dotenv.config();
 
@@ -62,9 +62,9 @@ export const refreshToken = async (req: any, res: any ) => {
     if (refreshToken === null || refreshToken === undefined) return res.sendStatus(401); // return unauthorized if there is no token
     if (!tokenModel.findOne({ refreshToken: refreshToken })) return res.sendStatus(403); // return forbidden if the given token not exists
 
-    const accessTokenSecret = getAccessTokenSecret();  // Holen des Secrets über die Hilfsfunktion
+    const refreshTokenSecret = getRefreshTokenSecret();  // Holen des Secrets über die Hilfsfunktion
 
-    jwt.verify(refreshToken, accessTokenSecret, (err: any, user: any) => {
+    jwt.verify(refreshToken, refreshTokenSecret, (err: any, user: any) => {
         if (err) return res.sendStatus(403);
         const accessToken = generateAccessToken({ email: user.email });
         res.json({ accessToken: accessToken });
@@ -87,6 +87,6 @@ function generateAccessToken(user: any) {
 }
 
 function generateRefreshToken(user: any) {
-    const accessTokenSecret = getAccessTokenSecret();  // Holen des Secrets über die Hilfsfunktion
-    return jwt.sign(user, accessTokenSecret, { expiresIn: '30d' });
+    const refreshTokenSecret = getRefreshTokenSecret();  // Holen des Secrets über die Hilfsfunktion
+    return jwt.sign(user, refreshTokenSecret, { expiresIn: '30d' });
 }
