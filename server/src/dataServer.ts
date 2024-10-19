@@ -1,7 +1,8 @@
 import express, { json, urlencoded } from 'express';
 import * as mongoose from 'mongoose';
 
-import userDataRouter from './routers/userData.router.js';
+import userRouter from './routers/user.router.js'
+import addressRouter from './routers/address.router.js';
 
 const port = 1338;
 const app = express();
@@ -11,7 +12,8 @@ app.use(json());
 app.use(urlencoded({ extended: false }));
 
 // routes
-app.use('/api/userdata', userDataRouter);
+app.use('/api/user', userRouter);
+app.use('/api/address', addressRouter);
 
 mongoose.connect('mongodb://172.24.48.1:27017/test')
 .then(() => {
