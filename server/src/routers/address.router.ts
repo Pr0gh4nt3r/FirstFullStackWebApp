@@ -1,6 +1,12 @@
 import express from 'express';
 
-import { getAddress, createAddress, updateAddress, deleteAddress, createAddressAndLinkToUser } from '../controllers/address.controller.js';
+import {
+    getAddress,
+    createAddress,
+    updateAddress,
+    deleteAddress,
+    createAddressAndLinkToUser
+} from '../controllers/address.controller.js';
 import { authenticateToken } from '../controllers/jwt.controller.js';
 
 const addressRouter = express.Router();
