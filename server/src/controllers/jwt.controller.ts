@@ -67,7 +67,7 @@ export const refreshToken = async (req: any, res: any ) => {
     jwt.verify(refreshToken, refreshTokenSecret, (err: any, user: any) => {
         if (err) return res.sendStatus(403);
         const accessToken = generateAccessToken({ email: user.email });
-        res.json({ accessToken: accessToken });
+        res.status(200).json({ accessToken: accessToken });
     });
 }
 
@@ -83,7 +83,7 @@ export const deleteRefreshToken = async (req: any, res: any) => {
 
 function generateAccessToken(user: any) {
     const accessTokenSecret = getAccessTokenSecret();  // Holen des Secrets über die Hilfsfunktion
-    return jwt.sign(user, accessTokenSecret, { expiresIn: '30m' });
+    return jwt.sign(user, accessTokenSecret, { expiresIn: '60m' });
 }
 
 function generateRefreshToken(user: any) {
