@@ -63,7 +63,6 @@ export const deleteAddress = async (req: Request, res: Response) => {
         if (!address)
             return res.status(404).json({ message: 'Address not found!' });
 
-        // ToDo remove userId from request body and unlink deleted address id from all users that have this address linked
         const {userId} = req.body;
         const updatedUser = await UserModel.findByIdAndUpdate(
             userId,

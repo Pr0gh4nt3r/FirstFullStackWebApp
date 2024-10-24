@@ -1,8 +1,13 @@
+import dotenv from 'dotenv';
+
 import express, { json, urlencoded } from 'express';
 import * as mongoose from 'mongoose';
 
 import userRouter from './routers/user.router.js'
 import addressRouter from './routers/address.router.js';
+import { getMongoDBURL, getMongoDBPort } from './helpers/databaseInfo.js';
+
+dotenv.config();
 
 const port = 1338;
 const app = express();
@@ -15,7 +20,7 @@ app.use(urlencoded({ extended: false }));
 app.use('/api/user', userRouter);
 app.use('/api/address', addressRouter);
 
-mongoose.connect('mongodb://172.24.48.1:27017/test')
+mongoose.connect(`mongodb://${getMongoDBURL()}:${getMongoDBPort()}/test`)
 .then(() => {
     console.log('Database connection successfully established!');
     app.listen(port, () => {
