@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 
-import UserModel from "../models/user.model.js";
+import UserModel from "../Models/user.model.js";
 
 export const getUser = async (req: Request, res: Response) => {
   try {

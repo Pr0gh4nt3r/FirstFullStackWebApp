@@ -2,8 +2,8 @@ import dotenv from "dotenv";
 import express, { json, urlencoded } from "express";
 import mongoose from "mongoose";
 
-import jwtRouter from "./routers/jwt.router.js";
-import { getMongoDBURL, getMongoDBPort } from "./helpers/databaseInfo.js";
+import jwtRouter from "./Routers/jwt.router.js";
+import { getMongoDbIP, getMongoDbPort } from "./Helpers/databaseInfo.js";
 
 dotenv.config();
 
@@ -18,7 +18,7 @@ app.use(urlencoded({ extended: false }));
 app.use("/api", jwtRouter);
 
 mongoose
-  .connect(`mongodb://${getMongoDBURL()}:${getMongoDBPort()}/test`)
+  .connect(`mongodb://${getMongoDbIP()}:${getMongoDbPort()}/test`)
   .then(() => {
     console.log("Database connection successfully established!");
     app.listen(port, () => {

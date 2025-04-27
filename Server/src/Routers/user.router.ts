@@ -9,8 +9,8 @@ import {
   deletePersonalData,
   linkAddressToUser,
   unlinkAddressToUser,
-} from "../controllers/user.controller.js";
-import { authenticateToken } from "../controllers/jwt.controller.js";
+} from "../Controllers/user.controller.js";
+import { authenticateToken } from "../Controllers/jwt.controller.js";
 
 const userRouter = express.Router();
 

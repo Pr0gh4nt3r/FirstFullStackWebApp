@@ -2,12 +2,12 @@ import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
-import UserModel from "../models/user.model.js";
-import tokenModel from "../models/token.model.js";
+import UserModel from "../Models/user.model.js";
+import tokenModel from "../Models/token.model.js";
 import {
   getAccessTokenSecret,
   getRefreshTokenSecret,
-} from "../helpers/tokenSecret.js";
+} from "../Helpers/tokenSecret.js";
 
 dotenv.config();
 

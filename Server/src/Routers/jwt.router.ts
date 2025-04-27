@@ -4,7 +4,7 @@ import {
   authenticateUser,
   deleteRefreshToken,
   refreshToken,
-} from "../controllers/jwt.controller.js";
+} from "../Controllers/jwt.controller.js";
 
 const jwtRouter = express.Router();
 

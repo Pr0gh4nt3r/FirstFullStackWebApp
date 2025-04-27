@@ -1,13 +1,13 @@
-export const getMongoDBURL = (): string => {
+export const getMongoDbIP = (): string => {
   // Überprüfen, ob MONGO_DB_URL gesetzt ist
-  const url = process.env.MONGO_DB_URL;
-  if (!url) {
-    throw new Error("MONGO_DB_URL is not defined in environment variables");
+  const ip = process.env.MONGO_DB_IP;
+  if (!ip) {
+    throw new Error("MONGO_DB_IP is not defined in environment variables");
   }
-  return url;
+  return ip;
 };
 
-export const getMongoDBPort = (): string => {
+export const getMongoDbPort = (): string => {
   // Überprüfen, ob MONGO_DB_PORT gesetzt ist
   const port = process.env.MONGO_DB_PORT;
   if (!port) {

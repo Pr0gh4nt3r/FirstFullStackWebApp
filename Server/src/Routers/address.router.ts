@@ -6,8 +6,8 @@ import {
   updateAddress,
   deleteAddress,
   createAddressAndLinkToUser,
-} from "../controllers/address.controller.js";
-import { authenticateToken } from "../controllers/jwt.controller.js";
+} from "../Controllers/address.controller.js";
+import { authenticateToken } from "../Controllers/jwt.controller.js";
 
 const addressRouter = express.Router();
 

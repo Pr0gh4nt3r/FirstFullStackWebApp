@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 
-import AddressModel from "../models/address.model.js";
-import UserModel from "../models/user.model.js";
+import AddressModel from "../Models/address.model.js";
+import UserModel from "../Models/user.model.js";
 
 export const getAddress = async (req: Request, res: Response) => {
   try {

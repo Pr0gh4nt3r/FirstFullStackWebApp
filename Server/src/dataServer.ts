@@ -3,9 +3,9 @@ import dotenv from "dotenv";
 import express, { json, urlencoded } from "express";
 import * as mongoose from "mongoose";
 
-import userRouter from "./routers/user.router.js";
-import addressRouter from "./routers/address.router.js";
-import { getMongoDBURL, getMongoDBPort } from "./helpers/databaseInfo.js";
+import userRouter from "./Routers/user.router.js";
+import addressRouter from "./Routers/address.router.js";
+import { getMongoDbIP, getMongoDbPort } from "./Helpers/databaseInfo.js";
 
 dotenv.config();
 
@@ -21,7 +21,7 @@ app.use("/api/user", userRouter);
 app.use("/api/address", addressRouter);
 
 mongoose
-  .connect(`mongodb://${getMongoDBURL()}:${getMongoDBPort()}/test`)
+  .connect(`mongodb://${getMongoDbIP()}:${getMongoDbPort()}/test`)
   .then(() => {
     console.log("Database connection successfully established!");
     app.listen(port, () => {
