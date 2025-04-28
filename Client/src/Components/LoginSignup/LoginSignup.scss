@@ -1,0 +1,126 @@
+$primary-color: #4a90e2;
+$secondary-color: #fff;
+$text-color: #333;
+$input-bg: #f5f5f5;
+$border-radius: 0.5rem;
+$transition-time: 0.3s;
+
+.container {
+  max-width: 400px;
+  margin: 4rem auto;
+  padding: 2rem;
+  background: $secondary-color;
+  border-radius: $border-radius;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+  .header {
+    text-align: center;
+    margin-bottom: 2rem;
+
+    .text {
+      font-size: 1.75rem;
+      font-weight: bold;
+      color: $primary-color;
+      text-transform: uppercase;
+      position: relative;
+      display: inline-block;
+    }
+
+    .underline {
+      height: 4px;
+      width: 50px;
+      background: $primary-color;
+      margin: 0.5rem auto 0;
+      border-radius: $border-radius;
+    }
+  }
+
+  .inputs {
+    .input {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1.25rem;
+      background: $input-bg;
+      border-radius: $border-radius;
+      padding: 0.75rem;
+
+      img {
+        width: 1.25rem;
+        height: 1.25rem;
+        margin-right: 0.75rem;
+        opacity: 0.7;
+      }
+
+      input {
+        flex: 1;
+        border: none;
+        background: transparent;
+        font-size: 1rem;
+        color: $text-color;
+        outline: none;
+
+        &::placeholder {
+          color: lighten($text-color, 40%);
+        }
+      }
+    }
+  }
+
+  .links {
+    display: flex;
+    align-items: center;
+    margin: 1rem 0;
+
+    .left {
+      cursor: pointer;
+      font-size: 0.9rem;
+      color: $primary-color;
+      text-decoration: underline;
+
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+
+    .right {
+      margin-left: auto; // schiebt den Toggle-Link ganz nach rechts
+      cursor: pointer;
+      font-size: 0.9rem;
+      color: $primary-color;
+      text-decoration: underline;
+
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+  }
+
+  .submit-container {
+    display: flex;
+    justify-content: space-between;
+
+    .submit {
+      flex: 1;
+      text-align: center;
+      padding: 0.75rem;
+      margin: 0 0.5rem;
+      background: $primary-color;
+      color: $secondary-color;
+      font-weight: 600;
+      border-radius: $border-radius;
+      cursor: pointer;
+      transition: background $transition-time;
+
+      &:first-child {
+        margin-left: 0;
+      }
+      &:last-child {
+        margin-right: 0;
+      }
+
+      &:hover {
+        background: darken($primary-color, 5%);
+      }
+    }
+  }
+}
