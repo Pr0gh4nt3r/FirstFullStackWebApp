@@ -26,4 +26,6 @@ yarn.lock
 
 # locals
 .env
+package-lock.json
+Client/package-lock.json
 requests.rest
