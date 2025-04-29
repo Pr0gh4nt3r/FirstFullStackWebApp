@@ -8,8 +8,8 @@ import {
 
 const jwtRouter = express.Router();
 
-jwtRouter.post("/auth", authenticateUser);
+jwtRouter.post("/login", authenticateUser);
 jwtRouter.post("/reauth", refreshToken);
-jwtRouter.delete("/deauth", deleteRefreshToken);
+jwtRouter.delete("/logout", deleteRefreshToken);
 
 export default jwtRouter;

@@ -15,7 +15,7 @@ import { authenticateToken } from "../Controllers/jwt.controller.js";
 const userRouter = express.Router();
 
 userRouter.get("/", getUser);
-userRouter.post("/", createUser);
+userRouter.post("/signup", createUser);
 userRouter.get("/:id", authenticateToken, getUserWithAddresses);
 userRouter.patch("/:id", authenticateToken, updateUser);
 userRouter.patch("/:id/address/link", authenticateToken, linkAddressToUser);

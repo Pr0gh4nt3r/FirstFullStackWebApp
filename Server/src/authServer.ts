@@ -15,7 +15,7 @@ app.use(json());
 app.use(urlencoded({ extended: false }));
 
 // routes
-app.use("/api", jwtRouter);
+app.use(jwtRouter);
 
 mongoose
   .connect(`mongodb://${getMongoDbIP()}:${getMongoDbPort()}/test`)
