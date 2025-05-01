@@ -1,6 +1,6 @@
 // Profile.tsx
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate, Navigate } from "react-router-dom";
+import { useParams, Navigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import { IUserDocument } from "../../../../Server/src/Interfaces/user.interface";
