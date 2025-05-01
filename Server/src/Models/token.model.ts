@@ -1,10 +1,7 @@
 import mongoose, { Schema, Document } from "mongoose";
+import { IRefreshTokenDocument } from "../Interfaces/token.interface.js";
 
-export interface refreshTokenDocument extends Document {
-  refreshToken: string;
-}
-
-const refreshToken = new Schema<refreshTokenDocument>(
+const refreshToken = new Schema<IRefreshTokenDocument>(
   {
     refreshToken: { type: String, required: true, unique: true },
   },
@@ -15,5 +12,5 @@ const refreshToken = new Schema<refreshTokenDocument>(
 ); // Fügt createdAt und updatedAt hinzu
 
 // Modell exportieren
-const tokenModel = mongoose.model<refreshTokenDocument>("Token", refreshToken);
+const tokenModel = mongoose.model<IRefreshTokenDocument>("Token", refreshToken);
 export default tokenModel;

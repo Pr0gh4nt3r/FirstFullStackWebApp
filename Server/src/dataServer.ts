@@ -17,8 +17,8 @@ app.use(json());
 app.use(urlencoded({ extended: false }));
 
 // routes
-app.use("/data/user", userRouter);
-app.use("/data/address", addressRouter);
+app.use("/user", userRouter);
+app.use("/address", addressRouter);
 
 mongoose
   .connect(`mongodb://${getMongoDbIP()}:${getMongoDbPort()}/test`)

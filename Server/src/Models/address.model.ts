@@ -1,17 +1,9 @@
-import mongoose, { Schema, Document } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
-// Address Interface für TypeScript
-export interface AddressDocument extends Document {
-  country: string;
-  city: string;
-  zipCode: string;
-  street: string;
-  number: number;
-  additionalInfo?: string;
-}
+import { IAddressDocument } from "../Interfaces/address.interface.js";
 
 // Mongoose Address Schema
-export const AddressSchema = new Schema<AddressDocument>(
+export const AddressSchema = new Schema<IAddressDocument>(
   {
     country: { type: String, required: true },
     city: { type: String, required: true },
@@ -26,5 +18,5 @@ export const AddressSchema = new Schema<AddressDocument>(
   }
 ); // Fügt createdAt und updatedAt hinzu);
 
-const AddressModel = mongoose.model<AddressDocument>("Address", AddressSchema);
+const AddressModel = mongoose.model<IAddressDocument>("Address", AddressSchema);
 export default AddressModel;

@@ -7,14 +7,14 @@ import {
   deleteAddress,
   createAddressAndLinkToUser,
 } from "../Controllers/address.controller.js";
-import { authenticateToken } from "../Controllers/jwt.controller.js";
+import { validateToken } from "../Controllers/jwt.controller.js";
 
 const addressRouter = express.Router();
 
-addressRouter.get("/", authenticateToken, getAddress);
-addressRouter.post("/", authenticateToken, createAddress);
-addressRouter.post("/:id", authenticateToken, createAddressAndLinkToUser);
-addressRouter.patch("/:id", authenticateToken, updateAddress);
-addressRouter.delete("/:id", authenticateToken, deleteAddress);
+addressRouter.get("/", validateToken, getAddress);
+addressRouter.post("/", validateToken, createAddress);
+addressRouter.post("/:id", validateToken, createAddressAndLinkToUser);
+addressRouter.patch("/:id", validateToken, updateAddress);
+addressRouter.delete("/:id", validateToken, deleteAddress);
 
 export default addressRouter;

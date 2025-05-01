@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
 import UserModel from "../Models/user.model.js";
+import { IUserDocument } from "../Interfaces/user.interface.js";
 import tokenModel from "../Models/token.model.js";
 import {
   getAccessTokenSecret,
@@ -14,37 +15,40 @@ dotenv.config();
 export const authenticateUser = async (req: any, res: any) => {
   try {
     // find user by email
-    const userData = await UserModel.findOne({ email: req.body.email });
+    const user: IUserDocument | null = await UserModel.findOne({
+      email: req.body.email,
+    });
 
-    if (userData === null || userData === undefined)
+    if (user === null || user === undefined)
       return res.status(400).send("User not found");
 
     // authenticate user
-    if (await bcrypt.compare(req.body.password, userData.password)) {
-      const user = { email: userData.email };
-
-      const accessToken = generateAccessToken(user);
-      const refreshToken = generateRefreshToken(user);
-
-      // save refresh token
-      try {
-        await tokenModel.create({ refreshToken: refreshToken });
-      } catch (error: any) {
-        res.status(500).json({ message: error.message });
-      }
-
-      res
-        .status(200)
-        .json({ accessToken: accessToken, refreshToken: refreshToken });
-    } else {
+    if (!(await bcrypt.compare(req.body.password, user.password)))
       res.status(403).send("Wrong password");
+
+    // set payload an create tokens
+    const payload = { user: user.userName };
+    const accessToken = generateAccessToken(payload);
+    const refreshToken = generateRefreshToken(payload);
+
+    // save refresh token
+    try {
+      await tokenModel.create({ refreshToken: refreshToken });
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
     }
+
+    res.status(200).json({
+      accessToken: accessToken,
+      refreshToken: refreshToken,
+      user: { id: user._id },
+    });
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
 };
 
-export const authenticateToken = async (req: any, res: any, next: any) => {
+export const validateToken = async (req: any, res: any, next: any) => {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
 

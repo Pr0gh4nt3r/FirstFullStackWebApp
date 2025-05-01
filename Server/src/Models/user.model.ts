@@ -1,19 +1,8 @@
-import mongoose, { Schema, Document, ObjectId, Types } from "mongoose";
-
-// PersonalData Interface für TypeScript
-export interface PersonalData {
-  firstName: string;
-  secondName?: string;
-  lastName: string;
-  birthName?: string;
-  birthday: Date;
-  gender: "male" | "female" | "other";
-  phone?: string;
-  addresses?: ObjectId[];
-}
+import mongoose, { Schema, Types } from "mongoose";
+import { IPersonalData, IUserDocument } from "../Interfaces/user.interface.js";
 
 // Mongoose PersonalData Schema
-const PersonalDataSchema = new Schema<PersonalData>(
+const PersonalDataSchema = new Schema<IPersonalData>(
   {
     firstName: { type: String, required: true },
     secondName: { type: String, required: false },
@@ -27,17 +16,10 @@ const PersonalDataSchema = new Schema<PersonalData>(
   { _id: false }
 );
 
-// User Interface für TypeScript
-export interface UserDocument extends Document {
-  email: string;
-  password: string;
-  confirmed?: boolean;
-  personalData?: PersonalData; // personalData ist jetzt optional
-}
-
 // Mongoose User Schema
-const UserSchema = new Schema<UserDocument>(
+const UserSchema = new Schema<IUserDocument>(
   {
+    userName: { type: String, required: true, unique: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     confirmed: { type: Boolean, default: false },
@@ -50,5 +32,5 @@ const UserSchema = new Schema<UserDocument>(
 ); // Fügt createdAt und updatedAt hinzu
 
 // Modell exportieren
-const UserModel = mongoose.model<UserDocument>("User", UserSchema);
+const UserModel = mongoose.model<IUserDocument>("User", UserSchema);
 export default UserModel;

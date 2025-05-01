@@ -3,10 +3,12 @@ import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 
 import UserModel from "../Models/user.model.js";
+import { IUserDocument } from "../Interfaces/user.interface.js";
 
 export const getUser = async (req: Request, res: Response) => {
   try {
-    const user = await UserModel.findOne(req.body);
+    const { id } = req.params;
+    const user: IUserDocument | null = await UserModel.findById(id);
     res.status(200).json(user);
   } catch (error: any) {
     res.status(500).json({ message: error.message });
