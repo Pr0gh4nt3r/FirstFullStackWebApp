@@ -1,29 +1,22 @@
 import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
-
-import "./LoginSignup.scss";
-import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
 
 import emailIcon from "../Assets/email.png";
 import passwordIcon from "../Assets/passwort.png";
 import userIcon from "../Assets/nutzer.png";
+import { ILoginResponse } from "../../Interfaces/loginResponse.interface.ts";
 
-interface LoginResponse {
-  accessToken: string;
-  refreshToken: string;
-  user: {
-    id: string;
-    email: string;
-    userName: string;
-  };
-}
+import "./LoginSignup.scss";
+import "react-toastify/dist/ReactToastify.css";
 
 const LoginSignup: React.FC = () => {
   const [action, setAction] = useState<"signup" | "login">("login");
   const [form, setForm] = useState({ userName: "", email: "", password: "" });
+  const navigate = useNavigate();
 
-  const loginUrl = process.env.API_BASE_URL_AUTH;
-  const signupUrl = process.env.API_BASE_URL_DATA;
+  const loginUrl = process.env.REACT_APP_API_BASE_URL_AUTH;
+  const signupUrl = process.env.REACT_APP_API_BASE_URL_DATA;
   const isLogin = action === "login";
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -48,8 +41,7 @@ const LoginSignup: React.FC = () => {
         });
       }
 
-      const loginData = data as LoginResponse;
-      console.log("Login data:", loginData);
+      const loginData = data as ILoginResponse;
       localStorage.setItem("AccessToken", data.accessToken);
       localStorage.setItem("RefreshToken", data.refreshToken);
 
@@ -59,8 +51,8 @@ const LoginSignup: React.FC = () => {
         { position: "top-right" }
       );
 
-      // Handle successful login/signup - e.g., redirect or show a success message
-      console.log("User data:", loginData.user);
+      // Handle successful login/signup - e.g., redirect and/or show a success message
+      navigate(`/user/${loginData.user.id}`);
     } catch (error) {
       toast.error("An error occurred while processing your request.", {
         position: "top-right",
@@ -85,6 +77,9 @@ const LoginSignup: React.FC = () => {
                 placeholder="User Name"
                 value={form.userName}
                 onChange={(e) => setForm({ ...form, userName: e.target.value })}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") handleSubmit(e);
+                }}
               />
             </div>
           )}
@@ -95,6 +90,9 @@ const LoginSignup: React.FC = () => {
               placeholder="Email"
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") handleSubmit(e);
+              }}
             />
           </div>
           <div className="input">
@@ -104,6 +102,9 @@ const LoginSignup: React.FC = () => {
               placeholder="Password"
               value={form.password}
               onChange={(e) => setForm({ ...form, password: e.target.value })}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") handleSubmit(e);
+              }}
             />
           </div>
         </div>

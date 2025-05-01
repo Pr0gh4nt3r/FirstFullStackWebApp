@@ -10,17 +10,17 @@ import {
   linkAddressToUser,
   unlinkAddressToUser,
 } from "../Controllers/user.controller.js";
-import { authenticateToken } from "../Controllers/jwt.controller.js";
+import { validateToken } from "../Controllers/jwt.controller.js";
 
 const userRouter = express.Router();
 
-userRouter.get("/", getUser);
+userRouter.get("/:id", validateToken, getUser);
 userRouter.post("/signup", createUser);
-userRouter.get("/:id", authenticateToken, getUserWithAddresses);
-userRouter.patch("/:id", authenticateToken, updateUser);
-userRouter.patch("/:id/address/link", authenticateToken, linkAddressToUser);
-userRouter.patch("/:id/address/unlink", authenticateToken, unlinkAddressToUser);
-userRouter.delete("/:id/personaldata", authenticateToken, deletePersonalData);
-userRouter.delete("/:id", authenticateToken, deleteUser);
+userRouter.get("/:id/address", validateToken, getUserWithAddresses);
+userRouter.patch("/:id", validateToken, updateUser);
+userRouter.patch("/:id/address/link", validateToken, linkAddressToUser);
+userRouter.patch("/:id/address/unlink", validateToken, unlinkAddressToUser);
+userRouter.delete("/:id/personaldata", validateToken, deletePersonalData);
+userRouter.delete("/:id", validateToken, deleteUser);
 
 export default userRouter;
