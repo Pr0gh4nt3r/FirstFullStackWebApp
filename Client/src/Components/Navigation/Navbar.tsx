@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 import { logout } from "../../Helpers/auth.helper";
 import logoutIcon from "../Assets/logout.png";
@@ -10,8 +11,14 @@ const Navbar: React.FC = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    logout();
-    navigate("/");
+    try {
+      logout();
+      navigate("/");
+    } catch (error: any) {
+      toast.error(error.message || "Logout fehlgeschlagen", {
+        position: "top-right",
+      });
+    }
   };
 
   return (

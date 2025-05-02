@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import { IUserDocument } from "../../../../Server/src/Interfaces/user.interface";
 
 import "./Profile.scss";
+import { getUserFromDB } from "../../Helpers/data.helper";
 
 const Profile: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -14,24 +15,13 @@ const Profile: React.FC = () => {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const token = localStorage.getItem("AccessToken");
-      if (!token) {
-        toast.error("Nicht authentifiziert", { position: "top-right" });
-        setLoading(false);
-        return;
-      }
-
       try {
-        const res = await fetch(`http://localhost:1338/user/${id}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        if (!res.ok) {
-          throw new Error("Fehler beim Laden der User-Daten");
-        }
-        const data = await res.json();
-        setUser(data);
+        const user = await getUserFromDB(id as string);
+        setUser(user);
       } catch (err: any) {
-        toast.error(err.message, { position: "top-right" });
+        toast.error(err.message || "Es ist ein Fehler aufgetreten!", {
+          position: "top-right",
+        });
       } finally {
         setLoading(false);
       }

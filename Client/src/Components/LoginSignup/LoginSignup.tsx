@@ -27,29 +27,48 @@ const LoginSignup: React.FC = () => {
         return;
       }
 
-      const loginData = await login(form as IUserDocument, rememberMe);
+      try {
+        const loginData = await login(form as IUserDocument, rememberMe);
 
-      if (!loginData) {
-        toast.error("Login fehlgeschlagen", { position: "top-right" });
+        if (!loginData) {
+          toast.error("Login fehlgeschlagen", { position: "top-right" });
+          return;
+        }
+
+        // Redirect to user profile page after successful login
+        navigate(`/user/${loginData.user.id}`);
+      } catch (error: any) {
+        toast.error(error.message || "Ein Fehler ist aufgetreten", {
+          position: "top-right",
+        });
         return;
       }
-
-      navigate(`/user/${loginData.user.id}`);
     } else {
       if (!form.email || !form.password || !form.userName) {
         toast.error("Bitte alle Felder ausfüllen", { position: "top-right" });
         return;
       }
 
-      const registered = (await signup(form as IUserDocument)) || false;
+      try {
+        const registered = (await signup(form as IUserDocument)) || false;
 
-      if (!registered) {
-        toast.error("Registrierung fehlgeschlagen", { position: "top-right" });
+        if (!registered) {
+          toast.error("Registrierung fehlgeschlagen", {
+            position: "top-right",
+          });
+          return;
+        }
+
+        toast.success("Registrierung erfolgreich!", { position: "top-right" });
+
+        // Redirect to login page after successful signup
+        navigate("/");
+      } catch (error: any) {
+        toast.error(error.message || "Ein Fehler ist aufgetreten", {
+          position: "top-right",
+        });
         return;
       }
-
-      // Redirect to login page after successful signup
-      navigate("/");
     }
   };
 
