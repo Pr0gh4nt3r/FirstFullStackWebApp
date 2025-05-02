@@ -5,7 +5,8 @@ import { useNavigate } from "react-router-dom";
 import emailIcon from "../Assets/email.png";
 import passwordIcon from "../Assets/passwort.png";
 import userIcon from "../Assets/nutzer.png";
-import { ILoginResponse } from "../../Interfaces/loginResponse.interface.ts";
+import { login, signup } from "../../Helpers/auth.helper";
+import { IUserDocument } from "../../../../Server/src/Interfaces/user.interface";
 
 import "./LoginSignup.scss";
 import "react-toastify/dist/ReactToastify.css";
@@ -13,50 +14,42 @@ import "react-toastify/dist/ReactToastify.css";
 const LoginSignup: React.FC = () => {
   const [action, setAction] = useState<"signup" | "login">("login");
   const [form, setForm] = useState({ userName: "", email: "", password: "" });
+  const [rememberMe, setRememberMe] = useState(true);
   const navigate = useNavigate();
-
-  const loginUrl = process.env.REACT_APP_API_BASE_URL_AUTH;
-  const signupUrl = process.env.REACT_APP_API_BASE_URL_DATA;
   const isLogin = action === "login";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    try {
-      const apiURL = isLogin ? loginUrl : signupUrl;
-      const response = await fetch(`${apiURL}/${action}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(form),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        // Handle error
-        toast.error(data.message || "Ein Fehler ist aufgetreten", {
-          position: "top-right",
-        });
+    if (isLogin) {
+      if (!form.email || !form.password) {
+        toast.error("Bitte alle Felder ausfüllen", { position: "top-right" });
+        return;
       }
 
-      const loginData = data as ILoginResponse;
-      localStorage.setItem("AccessToken", data.accessToken);
-      localStorage.setItem("RefreshToken", data.refreshToken);
+      const loginData = await login(form as IUserDocument, rememberMe);
 
-      // Erfolgsmeldung mit Toast
-      toast.success(
-        isLogin ? "Erfolgreich eingeloggt!" : "Registrierung erfolgreich!",
-        { position: "top-right" }
-      );
+      if (!loginData) {
+        toast.error("Login fehlgeschlagen", { position: "top-right" });
+        return;
+      }
 
-      // Handle successful login/signup - e.g., redirect and/or show a success message
       navigate(`/user/${loginData.user.id}`);
-    } catch (error) {
-      toast.error("An error occurred while processing your request.", {
-        position: "top-right",
-      });
+    } else {
+      if (!form.email || !form.password || !form.userName) {
+        toast.error("Bitte alle Felder ausfüllen", { position: "top-right" });
+        return;
+      }
+
+      const registered = (await signup(form as IUserDocument)) || false;
+
+      if (!registered) {
+        toast.error("Registrierung fehlgeschlagen", { position: "top-right" });
+        return;
+      }
+
+      // Redirect to login page after successful signup
+      navigate("/");
     }
   };
 
@@ -108,6 +101,17 @@ const LoginSignup: React.FC = () => {
             />
           </div>
         </div>
+        {isLogin && (
+          <div className="checkbox-container">
+            <input
+              id="rememberMe"
+              type="checkbox"
+              checked={rememberMe}
+              onChange={(e) => setRememberMe(e.target.checked)}
+            />
+            <label htmlFor="rememberMe">Eingeloggt bleiben</label>
+          </div>
+        )}
         <div className="links">
           {isLogin && (
             <span

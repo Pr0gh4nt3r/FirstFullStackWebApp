@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import LoginSignup from "./Components/LoginSignup/LoginSignup";
 import Profile from "./Components/Profile/Profile";
 import Navbar from "./Components/Navigation/Navbar";
+import { AuthProvider } from "./Context/AuthContext";
 
 import "./App.css";
 
@@ -24,7 +25,9 @@ const AppRoutes: React.FC = () => {
 
 const App: React.FC = () => (
   <BrowserRouter>
-    <AppRoutes />
+    <AuthProvider>
+      <AppRoutes />
+    </AuthProvider>
   </BrowserRouter>
 );
 
