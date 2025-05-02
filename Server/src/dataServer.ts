@@ -5,7 +5,7 @@ import * as mongoose from "mongoose";
 
 import userRouter from "./Routers/user.router.js";
 import addressRouter from "./Routers/address.router.js";
-import { getMongoDbIP, getMongoDbPort } from "./Helpers/databaseInfo.js";
+import { getMongoDbIP, getMongoDbPort } from "./Helpers/db.helper.js";
 
 dotenv.config();
 

@@ -3,7 +3,7 @@ import express, { json, urlencoded } from "express";
 import mongoose from "mongoose";
 
 import jwtRouter from "./Routers/jwt.router.js";
-import { getMongoDbIP, getMongoDbPort } from "./Helpers/databaseInfo.js";
+import { getMongoDbIP, getMongoDbPort } from "./Helpers/db.helper.js";
 
 dotenv.config();
 

@@ -8,7 +8,7 @@ import tokenModel from "../Models/token.model.js";
 import {
   getAccessTokenSecret,
   getRefreshTokenSecret,
-} from "../Helpers/tokenSecret.js";
+} from "../Helpers/token.helper.ts.js";
 
 dotenv.config();
 
