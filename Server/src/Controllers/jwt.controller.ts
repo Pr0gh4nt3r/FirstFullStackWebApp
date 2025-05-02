@@ -16,33 +16,43 @@ export const authenticateUser = async (req: any, res: any) => {
   try {
     // find user by email
     const user: IUserDocument | null = await UserModel.findOne({
-      email: req.body.email,
+      email: req.body.form.email,
     });
 
     if (user === null || user === undefined)
       return res.status(400).send("User not found");
 
     // authenticate user
-    if (!(await bcrypt.compare(req.body.password, user.password)))
+    if (!(await bcrypt.compare(req.body.form.password, user.password)))
       res.status(403).send("Wrong password");
 
     // set payload an create tokens
-    const payload = { user: user.userName };
+    const payload = { id: user.id } as IUserDocument;
     const accessToken = generateAccessToken(payload);
-    const refreshToken = generateRefreshToken(payload);
 
-    // save refresh token
-    try {
-      await tokenModel.create({ refreshToken: refreshToken });
-    } catch (error: any) {
-      res.status(500).json({ message: error.message });
+    let response = {
+      accessToken: accessToken,
+      refreshToken: "",
+      user: { id: user._id },
+    };
+
+    if (req.body.rememberMe) {
+      const refreshToken = generateRefreshToken(payload);
+
+      // save refresh token
+      try {
+        await tokenModel.create({ refreshToken: refreshToken });
+      } catch (error: any) {
+        res.status(500).json({ message: error.message });
+      }
+
+      response = {
+        ...response,
+        refreshToken: refreshToken,
+      };
     }
 
-    res.status(200).json({
-      accessToken: accessToken,
-      refreshToken: refreshToken,
-      user: { id: user._id },
-    });
+    res.status(200).json(response);
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
@@ -75,7 +85,9 @@ export const refreshToken = async (req: any, res: any) => {
 
   jwt.verify(refreshToken, refreshTokenSecret, (err: any, user: any) => {
     if (err) return res.sendStatus(403);
-    const accessToken = generateAccessToken({ email: user.email });
+    const accessToken = generateAccessToken({
+      id: user.id,
+    } as IUserDocument);
     res.status(200).json({ accessToken: accessToken });
   });
 };
@@ -83,8 +95,8 @@ export const refreshToken = async (req: any, res: any) => {
 export const deleteRefreshToken = async (req: any, res: any) => {
   // delete active refreshtoken
   try {
-    const token = await tokenModel.findOneAndDelete({
-      refreshToken: req.body.token,
+    await tokenModel.findOneAndDelete({
+      refreshToken: req.body.refreshToken,
     });
     res.sendStatus(204);
   } catch (error: any) {
@@ -92,12 +104,12 @@ export const deleteRefreshToken = async (req: any, res: any) => {
   }
 };
 
-function generateAccessToken(user: any) {
+function generateAccessToken(user: IUserDocument) {
   const accessTokenSecret = getAccessTokenSecret(); // Holen des Secrets über die Hilfsfunktion
   return jwt.sign(user, accessTokenSecret, { expiresIn: "60m" });
 }
 
-function generateRefreshToken(user: any) {
+function generateRefreshToken(user: IUserDocument) {
   const refreshTokenSecret = getRefreshTokenSecret(); // Holen des Secrets über die Hilfsfunktion
   return jwt.sign(user, refreshTokenSecret, { expiresIn: "30d" });
 }
