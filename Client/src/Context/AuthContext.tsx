@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate, useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
 
 import { IAuthContextType } from "../Interfaces/authContext.interface";
 import { refreshAccessToken } from "../Helpers/auth.helper";
@@ -29,16 +30,24 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
 
     if (!refreshToken) return;
 
-    const user = await refreshAccessToken();
+    try {
+      const user = await refreshAccessToken();
 
-    if (!user) {
-      setAccessToken(null);
-      setUserId(null);
-      return;
+      if (!user) {
+        setAccessToken(null);
+        setUserId(null);
+        return;
+      }
+
+      setAccessToken(user.accessToken);
+      setUserId(user.userId);
+    } catch (error: any) {
+      localStorage.removeItem("AccessToken");
+      localStorage.removeItem("RefreshToken");
+      toast.error(error.message || "Ein Fehler ist aufgetreten.", {
+        position: "top-right",
+      });
     }
-
-    setAccessToken(user.accessToken);
-    setUserId(user.userId);
   };
 
   useEffect(() => {
