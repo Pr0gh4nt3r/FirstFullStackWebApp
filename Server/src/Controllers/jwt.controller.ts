@@ -20,11 +20,11 @@ export const authenticateUser = async (req: any, res: any) => {
     });
 
     if (user === null || user === undefined)
-      return res.status(400).send("User not found");
+      return res.status(400).send({ message: "User not found" });
 
     // authenticate user
     if (!(await bcrypt.compare(req.body.form.password, user.password)))
-      res.status(403).send("Wrong password");
+      return res.status(403).send({ message: "Wrong password" });
 
     // set payload an create tokens
     const payload = { id: user.id } as IUserDocument;
