@@ -1,5 +1,15 @@
 import { ObjectId, Document } from "mongoose";
 
+export interface IPhoneTypes {
+  type: string;
+  description: string;
+}
+
+export interface IPersonalDataPhones {
+  type: ObjectId;
+  number: string;
+}
+
 // PersonalData Interface für TypeScript
 export interface IPersonalData {
   firstName: string;
@@ -8,7 +18,7 @@ export interface IPersonalData {
   birthName?: string;
   birthday: Date;
   gender: "male" | "female" | "other";
-  phone?: string;
+  phones?: ObjectId[];
   addresses?: ObjectId[];
 }
 

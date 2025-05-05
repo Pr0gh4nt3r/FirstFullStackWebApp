@@ -1,5 +1,29 @@
 import mongoose, { Schema, Types } from "mongoose";
-import { IPersonalData, IUserDocument } from "../Interfaces/user.interface.js";
+import {
+  IPersonalData,
+  IPersonalDataPhones,
+  IPhoneTypes,
+  IUserDocument,
+} from "../Interfaces/user.interface.js";
+
+const PhonesTypesSchema = new Schema<IPhoneTypes>(
+  {
+    type: { type: String, required: true },
+    description: { type: String, required: true },
+  },
+  {
+    timestamps: true,
+    collection: "numberTypes",
+  }
+); // Fügt createdAt und updatedAt hinzu
+
+const PhonesDataSchema = new Schema<IPersonalDataPhones>(
+  {
+    type: { type: Types.ObjectId, required: true },
+    number: { type: String, required: true },
+  },
+  { _id: false } // Verhindert, dass Mongoose eine _id für jedes Element im Array erstellt
+);
 
 // Mongoose PersonalData Schema
 const PersonalDataSchema = new Schema<IPersonalData>(
@@ -10,10 +34,15 @@ const PersonalDataSchema = new Schema<IPersonalData>(
     birthName: { type: String, required: false },
     birthday: { type: Date, required: true },
     gender: { type: String, enum: ["male", "female", "other"], required: true },
-    phone: { type: String, required: false },
+    phones: [
+      { type: PhonesDataSchema, required: false }, // Array von Objekten
+    ], // Array von ObjectId-Referenzen
     addresses: [{ type: Types.ObjectId, ref: "addresses", required: false }], // Array von ObjectId-Referenzen
   },
-  { _id: false }
+  {
+    timestamps: true,
+    collection: "personalData",
+  }
 );
 
 // Mongoose User Schema
@@ -23,7 +52,7 @@ const UserSchema = new Schema<IUserDocument>(
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     confirmed: { type: Boolean, default: false },
-    personalData: { type: PersonalDataSchema, required: false }, // Optionales Feld
+    personalData: { type: Types.ObjectId, required: false }, // Optionales Feld
   },
   {
     timestamps: true,

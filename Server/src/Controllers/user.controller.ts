@@ -15,24 +15,116 @@ export const getUser = async (req: Request, res: Response) => {
   }
 };
 
-export const getUserWithAddresses = async (req: Request, res: Response) => {
+export const getUserWithPersonalData = async (req: Request, res: Response) => {
+  const { id } = req.params;
   try {
-    const { id } = req.params;
-
-    const userWithAddresses = await UserModel.aggregate([
-      {
-        $match: { _id: new mongoose.Types.ObjectId(id) }, // Finde den Benutzer basierend auf der User-ID
-      },
-      {
-        $lookup: {
-          // Verknüpfe die Adressen basierend auf den ObjectId's in personalData.addresses
-          from: "addresses", // Die Collection, aus der wir die Adressen beziehen
-          localField: "personalData.addresses", // Das Feld in der User-Collection, das die Adressen-IDs enthält
-          foreignField: "_id", // Das Feld in der Address-Collection, das die ObjectId's speichert
-          as: "personalData.addresses", // Wie das Ergebnis im Enddokument genannt wird
+    const userWithPersonalData: IUserDocument[] | null =
+      await UserModel.aggregate([
+        // 1) Finde den User
+        {
+          $match: { _id: new mongoose.Types.ObjectId(id) }, // Finde den Benutzer basierend auf der User-ID
         },
-      },
-    ]);
+        // 2) Hol personalData
+        {
+          $lookup: {
+            // Verknüpfe die Adressen basierend auf den ObjectId's in personalData.addresses
+            from: "personalData", // Die Collection, aus der wir die Adressen beziehen
+            localField: "personalData", // Das Feld in der User-Collection, das die Adressen-IDs enthält
+            foreignField: "_id", // Das Feld in der Address-Collection, das die ObjectId's speichert
+            as: "personalData", // Wie das Ergebnis im Enddokument genannt wird
+          },
+        },
+        { $unwind: "$personalData" }, // Entpacke das Array, um ein einzelnes Dokument zu erhalten
+        // 3) Unwind phones‑Array, damit wir jede Nummer einzeln lookuppen
+        {
+          $unwind: {
+            path: "$personalData.phones",
+            preserveNullAndEmptyArrays: true,
+          },
+        },
+        // 4) Lookup des Typs zu jeder Nummer
+        {
+          $lookup: {
+            from: "numberTypes",
+            localField: "personalData.phones.type",
+            foreignField: "_id",
+            as: "personalData.phones.typeInfo",
+          },
+        },
+        // 5) Flatten des Typ‑Arrays (genauer: wir erwarten einen Eintrag)
+        {
+          $addFields: {
+            "personalData.phones.typeInfo": {
+              $arrayElemAt: ["$personalData.phones.typeInfo", 0],
+            },
+          },
+        },
+        // 6) Bilde neues Feld phonesObj mit Nummer und Typ‑Beschreibung
+        {
+          $addFields: {
+            "personalData.phones": {
+              type: "$personalData.phones.typeInfo.description",
+              number: "$personalData.phones.number",
+            },
+          },
+        },
+        // 7) Regruppiere alle phones zu einem Array
+        {
+          $group: {
+            _id: "$_id",
+            userName: { $first: "$userName" },
+            email: { $first: "$email" },
+            password: { $first: "$password" },
+            confirmed: { $first: "$confirmed" },
+            personalData: { $first: "$personalData" },
+            phones: { $push: "$personalData.phones" }, // Alle Nummern in ein Array packen
+          },
+        },
+        // 8) Schreibe phones‑Array zurück in personalData
+        {
+          $addFields: {
+            "personalData.phones": "$phones", // Ersetze das Array mit den neuen Nummern
+          },
+        },
+        // Hier das typeInfo-Feld löschen:
+        {
+          $unset: ["personalData.phones.typeInfo", "phones"],
+        },
+        // 9) Säubere Hilfsfelder
+        {
+          $project: {
+            phones: 0,
+          },
+        },
+      ]); // Typisiere das Ergebnis als Array von IUserDocument
+    if (userWithPersonalData.length === 0) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.status(200).json(userWithPersonalData[0]); // Da Aggregation immer ein Array zurückgibt, nimm das erste Element
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const getUserWithAddresses = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  try {
+    const userWithAddresses: IUserDocument[] | null = await UserModel.aggregate(
+      [
+        {
+          $match: { _id: new mongoose.Types.ObjectId(id) }, // Finde den Benutzer basierend auf der User-ID
+        },
+        {
+          $lookup: {
+            // Verknüpfe die Adressen basierend auf den ObjectId's in personalData.addresses
+            from: "addresses", // Die Collection, aus der wir die Adressen beziehen
+            localField: "personalData.addresses", // Das Feld in der User-Collection, das die Adressen-IDs enthält
+            foreignField: "_id", // Das Feld in der Address-Collection, das die ObjectId's speichert
+            as: "personalData.addresses", // Wie das Ergebnis im Enddokument genannt wird
+          },
+        },
+      ]
+    );
 
     if (userWithAddresses.length === 0) {
       return res.status(404).json({ message: "User not found" });
