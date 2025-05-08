@@ -7,7 +7,7 @@ import {
   validateToken,
 } from "../Controllers/jwt.controller.js";
 
-const jwtRouter = express.Router();
+const jwtRouter = express.Router(); // Create a new router instance
 
 jwtRouter.post("/login", authenticateUser);
 jwtRouter.post("/refresh", refreshToken);

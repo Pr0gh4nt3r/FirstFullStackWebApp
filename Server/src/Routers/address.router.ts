@@ -5,15 +5,13 @@ import {
   createAddress,
   updateAddress,
   deleteAddress,
-  createAddressAndLinkToUser,
 } from "../Controllers/address.controller.js";
 import { validateToken } from "../Controllers/jwt.controller.js";
 
-const addressRouter = express.Router();
+const addressRouter = express.Router(); // Create a new router instance
 
-addressRouter.get("/", validateToken, getAddress);
+addressRouter.get("/:id", validateToken, getAddress);
 addressRouter.post("/", validateToken, createAddress);
-addressRouter.post("/:id", validateToken, createAddressAndLinkToUser);
 addressRouter.patch("/:id", validateToken, updateAddress);
 addressRouter.delete("/:id", validateToken, deleteAddress);
 

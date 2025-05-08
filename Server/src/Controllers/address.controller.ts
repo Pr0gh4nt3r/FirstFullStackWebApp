@@ -1,80 +1,56 @@
 import { Request, Response } from "express";
 
 import AddressModel from "../Models/address.model.js";
-import UserModel from "../Models/user.model.js";
 
 export const getAddress = async (req: Request, res: Response) => {
+  const { id } = req.params; // get user id from request params
   try {
-    const address = await AddressModel.find(req.body);
-    res.status(200).json(address);
+    const address = await AddressModel.findById(id); // Find the address by ID
+    res.status(200).json(address); // Return the address
   } catch (error: any) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: error.message || "Address not found" });
   }
 };
 
 export const createAddress = async (req: Request, res: Response) => {
   try {
-    const address = await AddressModel.create(req.body);
-    res.status(200).json(address);
+    const address = await AddressModel.create(req.body); // Create a new address
+    res.status(200).json(address); // Return the created address
   } catch (error: any) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-export const createAddressAndLinkToUser = async (
-  req: Request,
-  res: Response
-) => {
-  try {
-    const { id } = req.params;
-    const newAddress = new AddressModel(req.body);
-    await newAddress.save(); // Speichere die Adresse zuerst
-
-    const updatedUser = await UserModel.findByIdAndUpdate(
-      id,
-      { $push: { "personalData.addresses": newAddress._id } },
-      { new: true }
-    );
-
-    res.status(200).json(updatedUser);
-  } catch (error: any) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: error.message || "Address not found" });
   }
 };
 
 export const updateAddress = async (req: Request, res: Response) => {
+  const { id } = req.params; // get user id from request params
   try {
-    const { id } = req.params;
-    const address = await AddressModel.findByIdAndUpdate(id, req.body);
+    const updatedAddress = await AddressModel.findByIdAndUpdate(
+      id,
+      req.body,
+      { new: true } // Return the updated document
+    ); // Update the address by ID
 
-    if (!address)
+    // Check if the address was found and updated
+    if (!updatedAddress)
       return res.status(404).json({ message: "Address not found!" });
 
-    const updatedAddress = await AddressModel.findById(id);
-
-    res.status(200).json(updatedAddress);
+    res.status(200).json(updatedAddress); // Return the updated address
   } catch (error: any) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: error.message || "Address not found" });
   }
 };
 
 export const deleteAddress = async (req: Request, res: Response) => {
+  const { id } = req.params; // get user id from request params
   try {
-    const { id } = req.params;
-    const address = await AddressModel.findByIdAndDelete(id);
+    const address = await AddressModel.findByIdAndDelete(id); // Delete the address from the database
 
+    // Check if the address was found and deleted
     if (!address)
       return res.status(404).json({ message: "Address not found!" });
 
-    const { userId } = req.body;
-    const updatedUser = await UserModel.findByIdAndUpdate(
-      userId,
-      { $pull: { "personalData.addresses": id } }, // Entferne die addressId aus dem addresses-Array
-      { new: true } // Gib das aktualisierte Dokument zurück
-    );
-
-    res.status(200).json(`Address deleted successfully.\n${updatedUser}`);
+    res.status(200).json("Address successfully deleted."); // Return success message
   } catch (error: any) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: error.message || "Address not found" });
   }
 };

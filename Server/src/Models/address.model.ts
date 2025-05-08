@@ -12,11 +12,13 @@ export const AddressSchema = new Schema<IAddressDocument>(
     number: { type: Number, required: true },
     additionalInfo: { type: String, required: false },
   },
+  // added timestamps
   {
     timestamps: true,
     collection: "addresses",
   }
-); // Fügt createdAt und updatedAt hinzu);
+);
 
-const AddressModel = mongoose.model<IAddressDocument>("Address", AddressSchema);
-export default AddressModel;
+const AddressModel = mongoose.model<IAddressDocument>("Address", AddressSchema); // create Address model
+
+export default AddressModel; // export default AddressModel

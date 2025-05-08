@@ -1,7 +1,8 @@
 import { Document } from "mongoose";
 
-// Address Interface für TypeScript
+// Address Interface for TypeScript
 export interface IAddressDocument extends Document {
+  _id: string;
   country: string;
   city: string;
   zipCode: string;

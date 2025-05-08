@@ -5,7 +5,10 @@ import * as mongoose from "mongoose";
 
 import userRouter from "./Routers/user.router.js";
 import addressRouter from "./Routers/address.router.js";
+import personalDataRouter from "./Routers/personalData.router.js";
+import aggregationRouter from "./Routers/aggregation.router.js";
 import { getMongoDbIP, getMongoDbPort } from "./Helpers/db.helper.js";
+import phoneRouter from "./Routers/phone.router.js";
 
 dotenv.config();
 
@@ -18,7 +21,10 @@ app.use(urlencoded({ extended: false }));
 
 // routes
 app.use("/user", userRouter);
+app.use("/user/personal", personalDataRouter);
+app.use("/phone", phoneRouter);
 app.use("/address", addressRouter);
+app.use("/aggregation", aggregationRouter);
 
 mongoose
   .connect(`mongodb://${getMongoDbIP()}:${getMongoDbPort()}/test`)

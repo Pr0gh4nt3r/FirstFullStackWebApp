@@ -2,27 +2,21 @@ import express from "express";
 
 import {
   getUser,
-  getUserWithAddresses,
   createUser,
   updateUser,
   deleteUser,
-  deletePersonalData,
-  linkAddressToUser,
-  unlinkAddressToUser,
-  getUserWithPersonalData,
+  addPersonalData,
+  removePersonalData,
 } from "../Controllers/user.controller.js";
 import { validateToken } from "../Controllers/jwt.controller.js";
 
-const userRouter = express.Router();
+const userRouter = express.Router(); // Create a new router instance
 
 userRouter.get("/:id", validateToken, getUser);
-userRouter.get("/:id/personal", validateToken, getUserWithPersonalData);
-userRouter.get("/:id/address", validateToken, getUserWithAddresses);
 userRouter.post("/signup", createUser);
 userRouter.patch("/:id", validateToken, updateUser);
-userRouter.patch("/:id/address/link", validateToken, linkAddressToUser);
-userRouter.patch("/:id/address/unlink", validateToken, unlinkAddressToUser);
-userRouter.delete("/:id/personaldata", validateToken, deletePersonalData);
+userRouter.patch("/:id/personaldata/add", validateToken, addPersonalData);
+userRouter.patch("/:id/personaldata/remove", validateToken, removePersonalData);
 userRouter.delete("/:id", validateToken, deleteUser);
 
 export default userRouter;
