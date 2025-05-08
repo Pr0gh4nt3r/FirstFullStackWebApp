@@ -5,8 +5,27 @@ import mongoose from "mongoose";
 export const getPersonalData = async (req: Request, res: Response) => {
   const { id } = req.params; // get user id from request params
   try {
-    const personalData = await PersonalDataModel.findById(id); // Find the personal data by ID
-    res.status(200).json(personalData); // Return the personal data
+    const personalData = await PersonalDataModel.aggregate([
+      // 1) Find the User
+      {
+        $match: { _id: new mongoose.Types.ObjectId(id) }, // Find the user based on the User ID
+      },
+      // 2) filter the personalData
+      {
+        $project: {
+          _id: 0,
+          firstName: 1,
+          middleNames: 1,
+          lastName: 1,
+          birthName: 1,
+          birthday: 1,
+          gender: 1,
+          phones: 1,
+          addresses: 1,
+        },
+      },
+    ]);
+    res.status(200).json(personalData[0]); // Return the personal data
   } catch (error: any) {
     res
       .status(500)
@@ -27,10 +46,21 @@ export const createPersonalData = async (req: Request, res: Response) => {
 
 export const updatePersonalData = async (req: Request, res: Response) => {
   const { id } = req.params; // get user id from request params
+
+  const { remove = [], update = {} } = req.body as {
+    remove?: string[];
+    update?: Record<string, any>;
+  };
+
+  const unsetObj = remove.reduce<Record<string, any>>((acc, key) => {
+    acc[key] = ""; // Set the value to an empty string to indicate removal
+    return acc;
+  }, {});
+
   try {
     const updatedPersonalData = await PersonalDataModel.findByIdAndUpdate(
       id,
-      req.body,
+      { $set: update, $unset: unsetObj }, // Use $set to add/update fields and $unset to remove fields
       { new: true } // Return the updated document
     ); // Update the personal data by ID
 

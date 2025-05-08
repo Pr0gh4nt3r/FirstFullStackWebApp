@@ -3,7 +3,7 @@ import { IPhones, IPhoneTypes } from "../Interfaces/phones.interface.js";
 
 const PhonesTypesSchema = new Schema<IPhoneTypes>(
   {
-    type: { type: String, required: true },
+    key: { type: String, required: true },
     description: { type: String, required: true },
   },
   // added timestamps
@@ -13,7 +13,7 @@ const PhonesTypesSchema = new Schema<IPhoneTypes>(
   }
 );
 
-const PhonesDataSchema = new Schema<IPhones>(
+const PhonesSchema = new Schema<IPhones>(
   {
     type: { type: Types.ObjectId, required: true },
     number: { type: String, required: true },
@@ -31,6 +31,6 @@ export const PhonesTypesModel = mongoose.model<IPhoneTypes>(
   PhonesTypesSchema
 );
 
-const PhonesDataModel = mongoose.model<IPhones>("PhonesData", PhonesDataSchema);
+const PhonesModel = mongoose.model<IPhones>("Phones", PhonesSchema);
 
-export default PhonesDataModel; // export default PhonesTypesModel
+export default PhonesModel; // export default PhonesTypesModel

@@ -5,7 +5,7 @@ import { IPersonalData } from "../Interfaces/personalData.interface copy.js";
 const PersonalDataSchema = new Schema<IPersonalData>(
   {
     firstName: { type: String, required: true },
-    secondName: { type: String, required: false },
+    middleNames: { type: String, required: false },
     lastName: { type: String, required: true },
     birthName: { type: String, required: false },
     birthday: { type: Date, required: true },

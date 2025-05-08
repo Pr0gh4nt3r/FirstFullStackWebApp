@@ -23,7 +23,7 @@ export const getUser = async (req: Request, res: Response) => {
         },
       },
     ]);
-    res.status(200).json(user);
+    res.status(200).json(user[0]); // return the user
   } catch (error: any) {
     res.status(500).json({ message: error.message || "User not found" });
   }
@@ -69,17 +69,17 @@ export const updateUser = async (req: Request, res: Response) => {
 
 export const addPersonalData = async (req: Request, res: Response) => {
   const { id } = req.params; // get user id from request params
-  const { peronalDataId } = req.body; // the personal data to be added is taken from the request body
+  const { personalDataId } = req.body; // the personal data to be added is taken from the request body
   try {
     // Check if the personalDataId is a valid ObjectId
-    if (!mongoose.Types.ObjectId.isValid(peronalDataId)) {
+    if (!mongoose.Types.ObjectId.isValid(personalDataId)) {
       return res.status(400).json({ message: "Invalid personal data ID" });
     }
 
     // Use $set to add the ObjectId to the personalData field
     const updatedUser = await UserModel.findByIdAndUpdate(
       id,
-      { $set: { personalData: peronalDataId } }, // Set the personalData field to the new ObjectId
+      { $set: { personalData: personalDataId } }, // Set the personalData field to the new ObjectId
       { new: true } // Return the updated document
     );
 

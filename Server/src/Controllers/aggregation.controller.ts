@@ -24,6 +24,14 @@ export const getUserWithPersonalData = async (req: Request, res: Response) => {
           },
         },
         { $unwind: "$personalData" }, // Entpacke das Array, um ein einzelnes Dokument zu erhalten
+        {
+          $lookup: {
+            from: "phones", // Die Collection, aus der wir die Telefonnummern beziehen
+            localField: "personalData.phones", // Das Feld in der User-Collection, das die Telefonnummern-IDs enthält
+            foreignField: "_id", // Das Feld in der Phone-Collection, das die ObjectId's speichert
+            as: "personalData.phones", // Wie das Ergebnis im Enddokument genannt wird
+          },
+        },
         // 3) Unwind phones‑Array, damit wir jede Nummer einzeln lookuppen
         {
           $unwind: {
@@ -34,7 +42,7 @@ export const getUserWithPersonalData = async (req: Request, res: Response) => {
         // 4) Lookup des Typs zu jeder Nummer
         {
           $lookup: {
-            from: "numberTypes",
+            from: "phoneTypes", // Die Collection, aus der wir die Typen beziehen
             localField: "personalData.phones.type",
             foreignField: "_id",
             as: "personalData.phones.typeInfo",
@@ -80,17 +88,26 @@ export const getUserWithPersonalData = async (req: Request, res: Response) => {
           $project: {
             phones: 0,
             "personalData._id": 0,
+            "personalData.__v": 0,
+            "personalData.createdAt": 0,
+            "personalData.updatedAt": 0,
+            "personalData.phones._id": 0,
+            "personalData.phones.__v": 0,
+            "personalData.phones.createdAt": 0,
+            "personalData.phones.updatedAt": 0,
             "personalData.phones.typeInfo": 0,
             "personalData.addresses": 0,
           },
         },
       ]); // Typisiere das Ergebnis als Array von IUserDocument
     if (userWithPersonalData.length === 0) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(404).json({ message: "User not found." });
     }
     res.status(200).json(userWithPersonalData[0]); // Da Aggregation immer ein Array zurückgibt, nimm das erste Element
   } catch (error: any) {
-    res.status(500).json({ message: error.message || "User not found" });
+    res
+      .status(500)
+      .json({ message: error.message || "An Error occured while requesting." });
   }
 };
 
@@ -112,9 +129,14 @@ export const getUserWithAddresses = async (req: Request, res: Response) => {
             as: "personalData",
           },
         },
-        // Da wir aber personalData nur einmal erwarten, packen wir es als Objekt
+        { $unwind: "$personalData" }, // Entpacke das Array, um ein einzelnes Dokument zu erhalten
         {
-          $addFields: { personalData: { $arrayElemAt: ["$personalData", 0] } },
+          $lookup: {
+            from: "phones", // Die Collection, aus der wir die Telefonnummern beziehen
+            localField: "personalData.phones", // Das Feld in der User-Collection, das die Telefonnummern-IDs enthält
+            foreignField: "_id", // Das Feld in der Phone-Collection, das die ObjectId's speichert
+            as: "personalData.phones", // Wie das Ergebnis im Enddokument genannt wird
+          },
         },
         // 3) Phones auflösen (wie gehabt)
         {
@@ -125,7 +147,7 @@ export const getUserWithAddresses = async (req: Request, res: Response) => {
         },
         {
           $lookup: {
-            from: "numberTypes",
+            from: "phoneTypes",
             localField: "personalData.phones.type",
             foreignField: "_id",
             as: "personalData.phones.typeInfo",
@@ -215,6 +237,13 @@ export const getUserWithAddresses = async (req: Request, res: Response) => {
             addressObj: 0,
             addresses: 0,
             "personalData._id": 0,
+            "personalData.__v": 0,
+            "personalData.createdAt": 0,
+            "personalData.updatedAt": 0,
+            "personalData.phones._id": 0,
+            "personalData.phones.__v": 0,
+            "personalData.phones.createdAt": 0,
+            "personalData.phones.updatedAt": 0,
             "personalData.phones.typeInfo": 0,
             "personalData.addresses._id": 0,
             "personalData.addresses.createdAt": 0,
@@ -226,11 +255,13 @@ export const getUserWithAddresses = async (req: Request, res: Response) => {
     );
 
     if (userWithAddresses.length === 0) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(404).json({ message: "User not found." });
     }
 
     res.status(200).json(userWithAddresses[0]); // Da Aggregation immer ein Array zurückgibt, nimm das erste Element
   } catch (error: any) {
-    res.status(500).json({ message: error.message || "User not found" });
+    res
+      .status(500)
+      .json({ message: error.message || "An Error occured while requesting." });
   }
 };
