@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 import express, { json, urlencoded } from "express";
 import mongoose from "mongoose";
+import cookieParser from "cookie-parser";
 
 import jwtRouter from "./Routers/jwt.router.js";
 import { getMongoDbIP, getMongoDbPort } from "./Helpers/db.helper.js";
@@ -13,6 +14,7 @@ const app = express();
 // middleware
 app.use(json());
 app.use(urlencoded({ extended: false }));
+app.use(cookieParser());
 
 // routes
 app.use(jwtRouter);

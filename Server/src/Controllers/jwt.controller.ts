@@ -32,7 +32,6 @@ export const authenticateUser = async (req: any, res: any) => {
 
     let response = {
       accessToken: accessToken,
-      refreshToken: "",
       user: { id: user._id },
     };
 
@@ -46,10 +45,12 @@ export const authenticateUser = async (req: any, res: any) => {
         res.status(500).json({ message: error.message });
       }
 
-      response = {
-        ...response,
-        refreshToken: refreshToken,
-      };
+      res.cookie("refreshToken", refreshToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+        maxAge: 30 * 24 * 60 * 60 * 1000, // 30 Tage
+      } as any); // Setze den Cookie mit dem Refresh-Token
     }
 
     res.status(200).json(response);
@@ -74,10 +75,10 @@ export const validateToken = async (req: any, res: any, next: any) => {
 };
 
 export const refreshToken = async (req: any, res: any) => {
-  const refreshToken = req.body.token;
+  const refreshToken = req.cookies.refreshToken; // getting the refresh token from the cookies
 
-  if (refreshToken === null || refreshToken === undefined)
-    return res.sendStatus(401); // return unauthorized if there is no token
+  if (!refreshToken) return res.sendStatus(401); // return unauthorized if there is no token
+
   if (!tokenModel.findOne({ refreshToken: refreshToken }))
     return res.sendStatus(403); // return forbidden if the given token not exists
 
@@ -96,8 +97,16 @@ export const deleteRefreshToken = async (req: any, res: any) => {
   // delete active refreshtoken
   try {
     await tokenModel.findOneAndDelete({
-      refreshToken: req.body.refreshToken,
+      refreshToken: req.cookies.refreshToken,
     });
+
+    // delete "refreshToken" from cookies (name needs to match exactly)
+    res.clearCookie("refreshToken", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+    } as any); // Clear the cookie
+
     res.sendStatus(204);
   } catch (error: any) {
     res.status(500).json({ message: error.message });
