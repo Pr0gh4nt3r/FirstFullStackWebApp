@@ -29,6 +29,7 @@ const LoginSignup: React.FC = () => {
 
       try {
         const loginData = await login(form as IUserDocument, rememberMe);
+        console.log("Login Data:", loginData);
 
         if (!loginData) {
           toast.error("Login fehlgeschlagen", { position: "top-right" });

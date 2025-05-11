@@ -19,17 +19,13 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
   children,
 }) => {
   const [accessToken, setAccessToken] = useState<string | null>(
-    localStorage.getItem("AccessToken")
+    sessionStorage.getItem("accessToken")
   );
   const [userId, setUserId] = useState<string | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
 
   const refresh = async () => {
-    const refreshToken = localStorage.getItem("RefreshToken");
-
-    if (!refreshToken) return;
-
     try {
       const user = await refreshAccessToken();
 
@@ -42,8 +38,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
       setAccessToken(user.accessToken);
       setUserId(user.userId);
     } catch (error: any) {
-      localStorage.removeItem("AccessToken");
-      localStorage.removeItem("RefreshToken");
+      sessionStorage.removeItem("accessToken");
       toast.error(error.message || "Ein Fehler ist aufgetreten.", {
         position: "top-right",
       });
@@ -63,12 +58,14 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
         } catch {
           await refresh();
         }
+      } else {
+        await refresh();
       }
       // navigation logic
-      if (accessToken || localStorage.getItem("RefreshToken")) {
+      if (accessToken) {
         const id =
           userId ||
-          jwtDecode<IDecodedToken>(localStorage.getItem("AccessToken") || "")
+          jwtDecode<IDecodedToken>(sessionStorage.getItem("accessToken") || "")
             .id;
         if (location.pathname === "/") navigate(`/user/${id}`);
       } else {

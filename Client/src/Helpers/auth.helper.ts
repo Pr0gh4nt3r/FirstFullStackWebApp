@@ -13,6 +13,7 @@ export const login = async (form: IUserDocument, rememberMe: boolean) => {
     headers: {
       "Content-Type": "application/json",
     },
+    credentials: "include",
     body: JSON.stringify({ form, rememberMe }),
   });
 
@@ -22,26 +23,19 @@ export const login = async (form: IUserDocument, rememberMe: boolean) => {
     throw new Error(data.message || "Ein Fehler ist aufgetreten");
 
   const loginData = data as ILoginResponse;
-  localStorage.setItem("AccessToken", data.accessToken);
 
-  // Nur setzen, wenn "Eingeloggt bleiben" aktiviert ist
-  if (rememberMe && data.refreshToken) {
-    localStorage.setItem("RefreshToken", data.refreshToken);
-  }
+  sessionStorage.setItem("accessToken", loginData.accessToken);
 
   return loginData;
 };
 
 export const refreshAccessToken = async () => {
-  const refreshToken = localStorage.getItem("RefreshToken");
-  if (!refreshToken) throw new Error("Refresh token not found");
-
   const response = await fetch(`${authURL}/refresh`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ refreshToken }),
+    credentials: "include",
   });
 
   const data = await response.json();
@@ -49,36 +43,26 @@ export const refreshAccessToken = async () => {
   if (!response.ok)
     throw new Error(data.message || "Ein Fehler ist aufgetreten");
 
-  localStorage.setItem("AccessToken", data.accessToken);
+  sessionStorage.setItem("accessToken", data.accessToken);
 
   const decoded = jwtDecode(data.accessToken) as IDecodedToken;
   return { userId: decoded.id, accessToken: data.accessToken };
 };
 
 export const logout = async () => {
-  const refreshToken = localStorage.getItem("RefreshToken");
-
-  if (!refreshToken) {
-    localStorage.removeItem("AccessToken");
-    return;
-  }
-
   // Optional: Call your API to delete the refresh token
   const response = await fetch(`${authURL}/logout`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${localStorage.getItem("AccessToken")}`,
+      Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
     },
-    body: JSON.stringify({
-      refreshToken: localStorage.getItem("RefreshToken"),
-    }),
+    credentials: "include",
   });
 
   if (!response.ok) throw new Error("Fehler beim Abmelden");
 
-  localStorage.removeItem("AccessToken");
-  localStorage.removeItem("RefreshToken");
+  sessionStorage.removeItem("accessToken");
 };
 
 export const signup = async (form: IUserDocument) => {

@@ -9,7 +9,7 @@ import "./App.css";
 
 const AppRoutes: React.FC = () => {
   const location = useLocation();
-  const isAuthenticated = !!localStorage.getItem("AccessToken");
+  const isAuthenticated = !!sessionStorage.getItem("accessToken");
   const showNavbar = isAuthenticated && location.pathname.startsWith("/user");
 
   return (

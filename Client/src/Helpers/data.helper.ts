@@ -1,6 +1,6 @@
 export const getUserFromDB = async (id: string) => {
   const dataURL = process.env.REACT_APP_API_BASE_URL_DATA;
-  const token = localStorage.getItem("AccessToken");
+  const token = sessionStorage.getItem("accessToken");
 
   if (!token) {
     throw new Error("Nicht authentifiziert");
