@@ -2,14 +2,15 @@ import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
-import emailIcon from "../Assets/email.png";
-import passwordIcon from "../Assets/passwort.png";
-import userIcon from "../Assets/nutzer.png";
 import { login, signup } from "../../Helpers/auth.helper";
 import { IUserDocument } from "../../../../Server/src/Interfaces/user.interface";
 
 import "./LoginSignup.scss";
 import "react-toastify/dist/ReactToastify.css";
+
+import { ReactComponent as UserIcon } from "../Assets/user.svg";
+import { ReactComponent as EmailIcon } from "../Assets/email.svg";
+import { ReactComponent as PasswordIcon } from "../Assets/password.svg";
 
 const LoginSignup: React.FC = () => {
   const [action, setAction] = useState<"signup" | "login">("login");
@@ -84,7 +85,7 @@ const LoginSignup: React.FC = () => {
         <div className="inputs">
           {!isLogin && (
             <div className="input">
-              <img src={userIcon} alt="" />
+              <UserIcon />
               <input
                 type="text"
                 placeholder="User Name"
@@ -97,7 +98,7 @@ const LoginSignup: React.FC = () => {
             </div>
           )}
           <div className="input">
-            <img src={emailIcon} alt="" />
+            <EmailIcon />
             <input
               type="email"
               placeholder="Email"
@@ -109,7 +110,7 @@ const LoginSignup: React.FC = () => {
             />
           </div>
           <div className="input">
-            <img src={passwordIcon} alt="" />
+            <PasswordIcon />
             <input
               type="password"
               placeholder="Password"

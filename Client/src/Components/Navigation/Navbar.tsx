@@ -3,9 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import { logout } from "../../Helpers/auth.helper";
-import logoutIcon from "../Assets/logout.png";
 
 import "./Navbar.scss";
+
+// import logoutIcon from "../Assets/logout.svg";
 
 const Navbar: React.FC = () => {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ const Navbar: React.FC = () => {
     <nav className="navbar">
       <div className="navbar__brand">MyApp</div>
       <button className="navbar__logout" onClick={handleLogout}>
-        <img src={logoutIcon} alt="Logout" />
+        {/* <img src={logoutIcon} alt="Logout" /> */}
         <span>Logout</span>
       </button>
     </nav>
