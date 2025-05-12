@@ -8,6 +8,7 @@ const UserSchema = new Schema<IUserDocument>(
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     confirmed: { type: Boolean, default: false }, // default false
+    createdAt: { type: Date },
     personalData: { type: Types.ObjectId, required: false }, // optional
   },
   {

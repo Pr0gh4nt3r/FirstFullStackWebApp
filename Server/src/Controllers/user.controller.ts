@@ -20,6 +20,7 @@ export const getUser = async (req: Request, res: Response) => {
           email: 1,
           password: 1,
           confirmed: 1,
+          createdAt: 1,
         },
       },
     ]);

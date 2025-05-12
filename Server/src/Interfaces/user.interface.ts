@@ -8,5 +8,6 @@ export interface IUserDocument extends Document {
   email: string;
   password: string;
   confirmed?: boolean;
+  createdAt: Date;
   personalData?: IPersonalData; // optional
 }
