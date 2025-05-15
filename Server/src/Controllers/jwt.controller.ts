@@ -2,8 +2,8 @@ import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
-import UserModel from "../Models/user.model.js";
-import { IUserDocument } from "../Interfaces/user.interface.js";
+import AccountModel from "../Models/account.model.js";
+import { IAccountDocument } from "../Interfaces/account.interface.js";
 import tokenModel from "../Models/token.model.js";
 import {
   getAccessTokenSecret,
@@ -14,25 +14,24 @@ dotenv.config();
 
 export const authenticateUser = async (req: any, res: any) => {
   try {
-    // find user by email
-    const user: IUserDocument | null = await UserModel.findOne({
+    // find account by email
+    const account: IAccountDocument | null = await AccountModel.findOne({
       email: req.body.form.email,
     });
 
-    if (user === null || user === undefined)
-      return res.status(400).send({ message: "User not found" });
+    if (!account) return res.status(400).send({ message: "User not found" });
 
     // authenticate user
-    if (!(await bcrypt.compare(req.body.form.password, user.password)))
+    if (!(await bcrypt.compare(req.body.form.password, account.password)))
       return res.status(403).send({ message: "Wrong password" });
 
     // set payload an create tokens
-    const payload = { id: user.id } as IUserDocument;
+    const payload = { id: account.id } as IAccountDocument;
     const accessToken = generateAccessToken(payload);
 
     let response = {
       accessToken: accessToken,
-      user: { id: user._id },
+      account: { id: account._id },
     };
 
     if (req.body.rememberMe) {
@@ -63,13 +62,13 @@ export const validateToken = async (req: any, res: any, next: any) => {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
 
-  if (token === undefined || token === null) return res.status(401);
+  if (!token) return res.status(401);
 
   const accessTokenSecret = getAccessTokenSecret(); // Holen des Secrets über die Hilfsfunktion
 
-  jwt.verify(token, accessTokenSecret, (err: any, user: any) => {
+  jwt.verify(token, accessTokenSecret, (err: any, account: any) => {
     if (err) return res.status(403);
-    req.user = user;
+    req.account = account;
     next();
   });
 };
@@ -84,11 +83,11 @@ export const refreshToken = async (req: any, res: any) => {
 
   const refreshTokenSecret = getRefreshTokenSecret(); // Holen des Secrets über die Hilfsfunktion
 
-  jwt.verify(refreshToken, refreshTokenSecret, (err: any, user: any) => {
+  jwt.verify(refreshToken, refreshTokenSecret, (err: any, account: any) => {
     if (err) return res.sendStatus(403);
     const accessToken = generateAccessToken({
-      id: user.id,
-    } as IUserDocument);
+      id: account.id,
+    } as IAccountDocument);
     res.status(200).json({ accessToken: accessToken });
   });
 };
@@ -113,12 +112,12 @@ export const deleteRefreshToken = async (req: any, res: any) => {
   }
 };
 
-function generateAccessToken(user: IUserDocument) {
+function generateAccessToken(account: IAccountDocument) {
   const accessTokenSecret = getAccessTokenSecret(); // Holen des Secrets über die Hilfsfunktion
-  return jwt.sign(user, accessTokenSecret, { expiresIn: "60m" });
+  return jwt.sign(account, accessTokenSecret, { expiresIn: "60m" });
 }
 
-function generateRefreshToken(user: IUserDocument) {
+function generateRefreshToken(account: IAccountDocument) {
   const refreshTokenSecret = getRefreshTokenSecret(); // Holen des Secrets über die Hilfsfunktion
-  return jwt.sign(user, refreshTokenSecret, { expiresIn: "30d" });
+  return jwt.sign(account, refreshTokenSecret, { expiresIn: "30d" });
 }

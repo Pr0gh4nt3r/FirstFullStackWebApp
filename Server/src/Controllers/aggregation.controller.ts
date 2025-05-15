@@ -1,14 +1,14 @@
 import { Request, Response } from "express";
 import mongoose from "mongoose";
 
-import UserModel from "../Models/user.model.js";
-import { IUserDocument } from "../Interfaces/user.interface.js";
+import AccountModel from "../Models/account.model.js";
+import { IAccountDocument } from "../Interfaces/account.interface.js";
 
 export const getUserWithPersonalData = async (req: Request, res: Response) => {
   const { id } = req.params; // get user id from request params
   try {
-    const userWithPersonalData: IUserDocument[] | null =
-      await UserModel.aggregate([
+    const accountWithPersonalData: IAccountDocument[] | null =
+      await AccountModel.aggregate([
         // 1) Finde den User
         {
           $match: { _id: new mongoose.Types.ObjectId(id) }, // Finde den Benutzer basierend auf der User-ID
@@ -99,11 +99,11 @@ export const getUserWithPersonalData = async (req: Request, res: Response) => {
             "personalData.addresses": 0,
           },
         },
-      ]); // Typisiere das Ergebnis als Array von IUserDocument
-    if (userWithPersonalData.length === 0) {
+      ]); // Typisiere das Ergebnis als Array von IAccountDocument
+    if (accountWithPersonalData.length === 0) {
       return res.status(404).json({ message: "User not found." });
     }
-    res.status(200).json(userWithPersonalData[0]); // Da Aggregation immer ein Array zurückgibt, nimm das erste Element
+    res.status(200).json(accountWithPersonalData[0]); // Da Aggregation immer ein Array zurückgibt, nimm das erste Element
   } catch (error: any) {
     res
       .status(500)
@@ -114,8 +114,8 @@ export const getUserWithPersonalData = async (req: Request, res: Response) => {
 export const getUserWithAddresses = async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
-    const userWithAddresses: IUserDocument[] | null = await UserModel.aggregate(
-      [
+    const accountWithAddresses: IAccountDocument[] | null =
+      await AccountModel.aggregate([
         // 1) Benutzer finden
         {
           $match: { _id: new mongoose.Types.ObjectId(id) }, // Finde den Benutzer basierend auf der User-ID
@@ -251,14 +251,13 @@ export const getUserWithAddresses = async (req: Request, res: Response) => {
             "personalData.addresses.__v": 0,
           },
         },
-      ]
-    );
+      ]);
 
-    if (userWithAddresses.length === 0) {
+    if (accountWithAddresses.length === 0) {
       return res.status(404).json({ message: "User not found." });
     }
 
-    res.status(200).json(userWithAddresses[0]); // Da Aggregation immer ein Array zurückgibt, nimm das erste Element
+    res.status(200).json(accountWithAddresses[0]); // Da Aggregation immer ein Array zurückgibt, nimm das erste Element
   } catch (error: any) {
     res
       .status(500)

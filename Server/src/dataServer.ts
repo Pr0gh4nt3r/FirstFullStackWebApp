@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import express, { json, urlencoded } from "express";
 import * as mongoose from "mongoose";
 
-import userRouter from "./Routers/user.router.js";
+import accountRouter from "./Routers/account.router.js";
 import addressRouter from "./Routers/address.router.js";
 import personalDataRouter from "./Routers/personalData.router.js";
 import aggregationRouter from "./Routers/aggregation.router.js";
@@ -20,8 +20,8 @@ app.use(json());
 app.use(urlencoded({ extended: false }));
 
 // routes
-app.use("/user", userRouter);
-app.use("/user/personal", personalDataRouter);
+app.use(accountRouter);
+app.use("/personaldata", personalDataRouter);
 app.use("/phone", phoneRouter);
 app.use("/address", addressRouter);
 app.use("/aggregation", aggregationRouter);

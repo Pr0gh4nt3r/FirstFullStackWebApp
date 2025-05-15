@@ -9,10 +9,14 @@ import { validateToken } from "../Controllers/jwt.controller.js";
 const aggregationRouter = express.Router(); // Create a new router instance
 
 aggregationRouter.get(
-  "/user/:id/personal",
+  "/account/:id/personal",
   validateToken,
   getUserWithPersonalData
 );
-aggregationRouter.get("/user/:id/address", validateToken, getUserWithAddresses);
+aggregationRouter.get(
+  "/account/:id/address",
+  validateToken,
+  getUserWithAddresses
+);
 
 export default aggregationRouter;
