@@ -1,8 +1,8 @@
 import mongoose, { Schema, Types } from "mongoose";
-import { IUserDocument } from "../Interfaces/user.interface.js";
+import { IAccountDocument } from "../Interfaces/account.interface.js";
 
 // Mongoose User Schema
-const UserSchema = new Schema<IUserDocument>(
+const AccountSchema = new Schema<IAccountDocument>(
   {
     userName: { type: String, required: true, unique: true },
     email: { type: String, required: true, unique: true },
@@ -13,10 +13,10 @@ const UserSchema = new Schema<IUserDocument>(
   },
   {
     timestamps: true,
-    collection: "users",
+    collection: "accounts",
   }
 ); // added timestamps
 
-const UserModel = mongoose.model<IUserDocument>("User", UserSchema); // create User model
+const AccountModel = mongoose.model<IAccountDocument>("Account", AccountSchema); // create User model
 
-export default UserModel; // export default UserModel
+export default AccountModel; // export default UserModel

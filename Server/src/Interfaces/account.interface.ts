@@ -2,7 +2,7 @@ import { Document, ObjectId } from "mongoose";
 import { IPersonalData } from "./personalData.interface copy.js";
 
 // User Interface for TypeScript
-export interface IUserDocument extends Document {
+export interface IAccountDocument extends Document {
   _id: ObjectId;
   userName: string;
   email: string;
