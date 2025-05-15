@@ -1,13 +1,13 @@
 import { jwtDecode } from "jwt-decode";
 
-import { IUserDocument } from "../../../Server/src/Interfaces/user.interface";
+import { IAccountDocument } from "../../../Server/src/Interfaces/account.interface";
 import { ILoginResponse } from "../Interfaces/loginResponse.interface.ts";
 import { IDecodedToken } from "../Interfaces/token.interface";
 
 const authURL = process.env.REACT_APP_API_BASE_URL_AUTH;
 const dataURL = process.env.REACT_APP_API_BASE_URL_DATA;
 
-export const login = async (form: IUserDocument, rememberMe: boolean) => {
+export const login = async (form: IAccountDocument, rememberMe: boolean) => {
   const response = await fetch(`${authURL}/login`, {
     method: "POST",
     headers: {
@@ -50,12 +50,18 @@ export const refreshAccessToken = async () => {
 };
 
 export const logout = async () => {
-  // Optional: Call your API to delete the refresh token
+  const token = sessionStorage.getItem("accessToken");
+
+  if (!token) {
+    throw new Error("Nicht authentifiziert");
+  }
+
+  // Call API to delete the refresh token
   const response = await fetch(`${authURL}/logout`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
+      Authorization: `Bearer ${token}`,
     },
     credentials: "include",
   });
@@ -65,7 +71,7 @@ export const logout = async () => {
   sessionStorage.removeItem("accessToken");
 };
 
-export const signup = async (form: IUserDocument) => {
+export const signup = async (form: IAccountDocument) => {
   const response = await fetch(`${dataURL}/signup`, {
     method: "POST",
     headers: {

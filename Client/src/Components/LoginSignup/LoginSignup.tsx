@@ -3,7 +3,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 import { login, signup } from "../../Helpers/auth.helper";
-import { IUserDocument } from "../../../../Server/src/Interfaces/user.interface";
+import { IAccountDocument } from "../../../../Server/src/Interfaces/account.interface";
 
 import "./LoginSignup.scss";
 import "react-toastify/dist/ReactToastify.css";
@@ -29,16 +29,15 @@ const LoginSignup: React.FC = () => {
       }
 
       try {
-        const loginData = await login(form as IUserDocument, rememberMe);
-        console.log("Login Data:", loginData);
+        const loginData = await login(form as IAccountDocument, rememberMe);
 
         if (!loginData) {
           toast.error("Login fehlgeschlagen", { position: "top-right" });
           return;
         }
 
-        // Redirect to user profile page after successful login
-        navigate(`/user/${loginData.user.id}`);
+        // Redirect to account page after successful login
+        navigate("/account");
       } catch (error: any) {
         toast.error(error.message || "Ein Fehler ist aufgetreten", {
           position: "top-right",
@@ -52,7 +51,7 @@ const LoginSignup: React.FC = () => {
       }
 
       try {
-        const registered = (await signup(form as IUserDocument)) || false;
+        const registered = (await signup(form as IAccountDocument)) || false;
 
         if (!registered) {
           toast.error("Registrierung fehlgeschlagen", {

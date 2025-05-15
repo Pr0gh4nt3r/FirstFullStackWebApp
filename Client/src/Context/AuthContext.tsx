@@ -27,16 +27,16 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
 
   const refresh = async () => {
     try {
-      const user = await refreshAccessToken();
+      const account = await refreshAccessToken();
 
-      if (!user) {
+      if (!accessToken) {
         setAccessToken(null);
         setUserId(null);
         return;
       }
 
-      setAccessToken(user.accessToken);
-      setUserId(user.userId);
+      setAccessToken(account.accessToken);
+      setUserId(account.userId);
     } catch (error: any) {
       sessionStorage.removeItem("accessToken");
       toast.error(error.message || "Ein Fehler ist aufgetreten.", {
@@ -63,11 +63,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
       }
       // navigation logic
       if (accessToken) {
-        const id =
-          userId ||
-          jwtDecode<IDecodedToken>(sessionStorage.getItem("accessToken") || "")
-            .id;
-        if (location.pathname === "/") navigate(`/user/${id}`);
+        if (location.pathname === "/") navigate("/account");
       } else {
         if (location.pathname !== "/") navigate("/");
       }
