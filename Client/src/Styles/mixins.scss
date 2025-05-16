@@ -1,0 +1,46 @@
+// src/styles/mixins.scss
+@use "@/Styles/variables" as *;
+
+@mixin card-base {
+  background: $color-white;
+  border-radius: 0.5rem;
+  box-shadow: $shadow-light;
+  border: $card-border;
+  margin-bottom: 2rem;
+}
+
+@mixin card-style {
+  background: $color-white;
+  border-radius: $border-radius;
+  box-shadow: $shadow-light;
+  border: $card-border;
+}
+
+@mixin icon-spacing {
+  display: flex;
+  align-items: center;
+
+  svg,
+  .icon {
+    margin-right: 0.75rem;
+  }
+}
+
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+@mixin base-item-layout {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 0.75rem;
+  color: $color-muted;
+}

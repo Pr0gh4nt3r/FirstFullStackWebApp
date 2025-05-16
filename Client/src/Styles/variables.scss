@@ -1,0 +1,25 @@
+// src/styles/variables.scss
+$color-bg: #f0f2f5;
+$color-white: #fff;
+$color-text: #333;
+$color-title: #222;
+$color-subtitle: #555;
+$color-loading: #888;
+$color-primary: #0073e6;
+$color-accent: #3f3fff;
+$color-icon: rgba(0, 0, 0, 0.6);
+$color-accent-secondary: #ff3f7f;
+$color-muted: rgba(0, 0, 0, 0.7);
+$color-border: rgba(128, 128, 128, 0.4);
+$color-devider: rgba(128, 128, 128, 0.2);
+$color-hover-bg: rgba(0, 115, 230, 0.05);
+
+$card-border: 1px solid $color-border;
+$devider: 1.5px solid $color-devider;
+
+$sidebar-width: 240px;
+$border-radius: 0.5rem;
+$padding-base: 1rem;
+
+$shadow-light: 0 2px 8px rgba(0, 0, 0, 0.05);
+$border-light: 1px solid #e0e0e0;
