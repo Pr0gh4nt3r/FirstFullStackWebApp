@@ -3,7 +3,11 @@ import BaseCard from "@/Components/Card/BaseCard/BaseCard";
 
 import styles from "./ShortcutCard.module.scss";
 
-import { PasswordIcon, SettingsIcon, RightIcon } from "@/Components/Assets";
+import {
+  PasswordIcon,
+  SettingsIcon,
+  ChevronRightIcon,
+} from "@/Components/Assets";
 
 const ShortcutCard: React.FC = () => {
   return (
@@ -21,7 +25,7 @@ const ShortcutCard: React.FC = () => {
                 <span className={styles.content}>Passwort aktualisieren</span>
               </span>
               <span className={styles.supplemental}>
-                <RightIcon />
+                <ChevronRightIcon />
               </span>
             </span>
           </a>
@@ -38,7 +42,7 @@ const ShortcutCard: React.FC = () => {
                 <span className={styles.content}>Einstellungen bearbeiten</span>
               </span>
               <span className={styles.supplemental}>
-                <RightIcon />
+                <ChevronRightIcon />
               </span>
             </span>
           </a>
