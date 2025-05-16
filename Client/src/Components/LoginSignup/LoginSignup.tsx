@@ -2,15 +2,13 @@ import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
-import { login, signup } from "../../Helpers/auth.helper";
 import { IAccountDocument } from "../../../../Server/src/Interfaces/account.interface";
+import { login, signup } from "@/Helpers/auth.helper";
 
 import "./LoginSignup.scss";
 import "react-toastify/dist/ReactToastify.css";
 
-import { ReactComponent as UserIcon } from "../Assets/user.svg";
-import { ReactComponent as EmailIcon } from "../Assets/email.svg";
-import { ReactComponent as PasswordIcon } from "../Assets/password.svg";
+import { UserIcon, EmailIcon, PasswordIcon } from "@/Components/Assets";
 
 const LoginSignup: React.FC = () => {
   const [action, setAction] = useState<"signup" | "login">("login");

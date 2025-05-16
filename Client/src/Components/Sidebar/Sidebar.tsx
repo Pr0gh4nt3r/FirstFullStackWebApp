@@ -4,8 +4,7 @@ import { NavLink } from "react-router-dom";
 
 import "./Sidebar.scss";
 
-import { ReactComponent as HomeIcon } from "../Assets/home.svg";
-import { ReactComponent as SecurityIcon } from "../Assets/security.svg";
+import { HomeIcon, SecurityIcon } from "@/Components/Assets";
 
 const Sidebar: React.FC = () => {
   return (

@@ -2,11 +2,11 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-import { logout } from "../../Helpers/auth.helper";
+import { logout } from "@/Helpers/auth.helper";
 
 import "./Navbar.scss";
 
-// import logoutIcon from "../Assets/logout.svg";
+import { LogoutIcon } from "@/Components/Assets";
 
 const Navbar: React.FC = () => {
   const navigate = useNavigate();
@@ -26,8 +26,8 @@ const Navbar: React.FC = () => {
     <nav className="navbar">
       <div className="navbar__brand">MyApp</div>
       <button className="navbar__logout" onClick={handleLogout}>
-        {/* <img src={logoutIcon} alt="Logout" /> */}
-        <span>Logout</span>
+        <LogoutIcon className="navbar__icon" width={15} height={15} />
+        <span>Ausloggen</span>
       </button>
     </nav>
   );

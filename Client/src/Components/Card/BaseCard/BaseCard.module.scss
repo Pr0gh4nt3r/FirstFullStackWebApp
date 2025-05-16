@@ -1,0 +1,6 @@
+@use "@/Styles/variables" as *;
+@use "@/Styles/mixins" as *;
+
+.baseCard {
+  @include card-base;
+}

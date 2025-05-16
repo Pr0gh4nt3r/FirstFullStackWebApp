@@ -1,8 +1,8 @@
 import { jwtDecode } from "jwt-decode";
 
 import { IAccountDocument } from "../../../Server/src/Interfaces/account.interface";
-import { ILoginResponse } from "../Interfaces/loginResponse.interface.ts";
-import { IDecodedToken } from "../Interfaces/token.interface";
+import { ILoginResponse } from "@/Interfaces/loginResponse.interface.ts";
+import { IDecodedToken } from "@/Interfaces/token.interface";
 
 const authURL = process.env.REACT_APP_API_BASE_URL_AUTH;
 const dataURL = process.env.REACT_APP_API_BASE_URL_DATA;

@@ -1,6 +1,6 @@
-$primary-color: #4a90e2;
-$secondary-color: #fff;
-$text-color: #333;
+@use "@/Styles/variables" as *;
+@use "@/Styles/mixins" as *;
+
 $input-bg: #f5f5f5;
 $border-radius: 0.5rem;
 $transition-time: 0.3s;
@@ -9,7 +9,7 @@ $transition-time: 0.3s;
   max-width: 400px;
   margin: 4rem auto;
   padding: 2rem;
-  background: $secondary-color;
+  background: $color-white;
   border-radius: $border-radius;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 
@@ -20,7 +20,7 @@ $transition-time: 0.3s;
     .text {
       font-size: 1.75rem;
       font-weight: bold;
-      color: $primary-color;
+      color: $color-primary;
       text-transform: uppercase;
       position: relative;
       display: inline-block;
@@ -29,7 +29,7 @@ $transition-time: 0.3s;
     .underline {
       height: 4px;
       width: 50px;
-      background: $primary-color;
+      background: $color-primary;
       margin: 0.5rem auto 0;
       border-radius: $border-radius;
     }
@@ -56,11 +56,11 @@ $transition-time: 0.3s;
         border: none;
         background: transparent;
         font-size: 1rem;
-        color: $text-color;
+        color: $color-text;
         outline: none;
 
         &::placeholder {
-          color: lighten($text-color, 40%);
+          color: lighten($color-text, 40%);
         }
       }
     }
@@ -79,7 +79,7 @@ $transition-time: 0.3s;
 
     label {
       font-size: 0.9rem;
-      color: $text-color;
+      color: $color-text;
     }
   }
 
@@ -91,7 +91,7 @@ $transition-time: 0.3s;
     .left {
       cursor: pointer;
       font-size: 0.9rem;
-      color: $primary-color;
+      color: $color-primary;
       text-decoration: underline;
 
       &:hover {
@@ -103,7 +103,7 @@ $transition-time: 0.3s;
       margin-left: auto; // schiebt den Toggle-Link ganz nach rechts
       cursor: pointer;
       font-size: 0.9rem;
-      color: $primary-color;
+      color: $color-primary;
       text-decoration: underline;
 
       &:hover {
@@ -121,8 +121,8 @@ $transition-time: 0.3s;
       text-align: center;
       padding: 0.75rem;
       margin: 0 0.5rem;
-      background: $primary-color;
-      color: $secondary-color;
+      background: $color-primary;
+      color: $color-white;
       font-weight: 600;
       border-radius: $border-radius;
       cursor: pointer;
@@ -136,7 +136,7 @@ $transition-time: 0.3s;
       }
 
       &:hover {
-        background: darken($primary-color, 5%);
+        background: darken($color-primary, 5%);
       }
     }
   }

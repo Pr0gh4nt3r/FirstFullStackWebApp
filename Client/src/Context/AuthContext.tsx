@@ -3,9 +3,9 @@ import { jwtDecode } from "jwt-decode";
 import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 
-import { IAuthContextType } from "../Interfaces/authContext.interface";
-import { refreshAccessToken } from "../Helpers/auth.helper";
-import { IDecodedToken } from "../Interfaces/token.interface";
+import { IAuthContextType } from "@/Interfaces/authContext.interface";
+import { IDecodedToken } from "@/Interfaces/token.interface";
+import { refreshAccessToken } from "@/Helpers/auth.helper";
 
 const AuthContext = createContext<IAuthContextType>({
   accessToken: null,

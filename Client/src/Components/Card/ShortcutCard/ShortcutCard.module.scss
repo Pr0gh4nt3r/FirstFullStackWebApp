@@ -1,0 +1,87 @@
+@use "@/Styles/variables" as *;
+@use "@/Styles/mixins" as *;
+
+.shortcutCard {
+  @include flex-column;
+
+  ul {
+    margin: 0;
+    line-height: 1.5;
+    padding: 0 0.5rem;
+    font-weight: 600;
+
+    li {
+      @include icon-spacing;
+      margin: 0.5rem 0;
+      padding: 0.5rem 0;
+      cursor: pointer;
+      background-color: $color-white;
+      border-radius: 0.25rem;
+      color: $color-muted;
+      width: 100%;
+      list-style: none;
+      position: relative;
+
+      &:hover {
+        background: rgba(0, 115, 230, 0.05);
+      }
+
+      &:not(:first-of-type)::before {
+        position: absolute;
+        content: "";
+        border-top: $devider;
+        width: calc(100% - 32px);
+        top: -0.25rem;
+        left: 1rem;
+        right: 1rem;
+      }
+
+      a {
+        margin: 0.25rem;
+        text-decoration: none;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        background: transparent;
+      }
+    }
+  }
+}
+
+.baseItem {
+  @include base-item-layout;
+}
+
+.mainContent {
+  @include icon-spacing;
+  width: 100%;
+  font-size: 1.125rem;
+}
+
+.iconContainer {
+  position: relative;
+}
+
+.iconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding-right: 0.75rem;
+  color: $color-muted;
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  margin-left: 0.25rem;
+  margin-right: 0.5rem;
+  width: 100%;
+}
+
+.supplemental {
+  display: flex;
+  align-items: center;
+  color: $color-muted;
+}
