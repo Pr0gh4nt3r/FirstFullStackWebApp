@@ -1,20 +1,24 @@
 {
-    "compilerOptions": {
-      "target": "ES2023",                          // Das Ausgabe-JavaScript-Ziel (ES5 für Kompatibilität)
-      "lib": ["dom", "dom.iterable", "esnext"], // Bibliotheken, die während der Kompilierung zur Verfügung stehen
-      "allowJs": true,                          // Erlaubt es, .js Dateien zu kompilieren
-      "skipLibCheck": true,                     // Überspringt die Typenprüfung in den Definitionsdateien
-      "esModuleInterop": true,                  // Ermöglicht den Import von CommonJS-Modulen
-      "allowSyntheticDefaultImports": true,     // Erlaubt den Standardimport von Modulen ohne "default" Export
-      "strict": true,                           // Aktiviert strikte Typprüfung (empfohlen)
-      "forceConsistentCasingInFileNames": true, // Erzwingt gleichbleibende Groß-/Kleinschreibung
-      "noFallthroughCasesInSwitch": true,       // Warnt bei unerwarteten "switch"-Fällen
-      "module": "NodeNext",                       // Modul-System auf "ESNext" setzen (benötigt für dynamischen Import)
-      "moduleResolution": "NodeNext",               // Modulauflösung auf "Node.js"-Art
-      "resolveJsonModule": true,                // Erlaubt das Importieren von JSON-Dateien
-      "isolatedModules": true,                  // Jede Datei wird als eigenes Modul behandelt
-      "jsx": "react-jsx"                        // Ermöglicht die Nutzung von JSX/TSX mit React
-    },
-    "include": ["src"],                         // Welche Verzeichnisse/Dateien in die Kompilierung eingeschlossen werden
-    "exclude": ["node_modules", "build"]        // Welche Verzeichnisse/Dateien ausgeschlossen werden
-  }
+  "compilerOptions": {
+    "target": "ES2023", // Das Ausgabe-JavaScript-Ziel (ES5 für Kompatibilität)
+    "lib": ["dom", "dom.iterable", "esnext"], // Bibliotheken, die während der Kompilierung zur Verfügung stehen
+    "allowJs": true, // Erlaubt es, .js Dateien zu kompilieren
+    "skipLibCheck": true, // Überspringt die Typenprüfung in den Definitionsdateien
+    "esModuleInterop": true, // Ermöglicht den Import von CommonJS-Modulen
+    "allowSyntheticDefaultImports": true, // Erlaubt den Standardimport von Modulen ohne "default" Export
+    "strict": true, // Aktiviert strikte Typprüfung (empfohlen)
+    "forceConsistentCasingInFileNames": true, // Erzwingt gleichbleibende Groß-/Kleinschreibung
+    "noFallthroughCasesInSwitch": true, // Warnt bei unerwarteten "switch"-Fällen
+    "module": "NodeNext", // Modul-System auf "ESNext" setzen (benötigt für dynamischen Import)
+    "moduleResolution": "NodeNext", // Modulauflösung auf "Node.js"-Art
+    "resolveJsonModule": true, // Erlaubt das Importieren von JSON-Dateien
+    "isolatedModules": true, // Jede Datei wird als eigenes Modul behandelt
+    "jsx": "react-jsx", // Ermöglicht die Nutzung von JSX/TSX mit React
+    "baseUrl": "src", // Basisverzeichnis für relative Imports
+    "paths": {
+      "@/*": ["./*"] // Erlaubt kürzere Imports (z.B. "@/components/MyComponent")
+    }
+  },
+  "include": ["src"], // Welche Verzeichnisse/Dateien in die Kompilierung eingeschlossen werden
+  "exclude": ["node_modules", "build"] // Welche Verzeichnisse/Dateien ausgeschlossen werden
+}
