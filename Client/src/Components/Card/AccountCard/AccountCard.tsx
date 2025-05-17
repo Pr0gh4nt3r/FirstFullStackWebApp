@@ -17,19 +17,24 @@ const AccountCard: React.FC<AccountCardProps> = ({
   memberSince,
 }) => {
   return (
-    <BaseCard className={styles.accountCard}>
-      <div className={styles.banner}>Mitglied seit {memberSince}</div>
-      <div className={styles.accountInfo}>
-        <div className={styles.infoItem}>
-          <UserIcon className={styles.icon} />
-          <span>{userName}</span>
+    <>
+      <h1 className={styles.mainTitle}>Konto</h1>
+      <h2 className={styles.subtitle}>Details zum Konto</h2>
+      <BaseCard className={styles.accountCard}>
+        <div className={styles.banner}>Mitglied seit {memberSince}</div>
+        <div className={styles.accountInfo}>
+          <div className={styles.infoItem}>
+            <UserIcon className={styles.icon} />
+            <span>{userName}</span>
+          </div>
+          <div className={styles.infoItem}>
+            <EmailIcon className={styles.icon} />
+            <span>{anonEmail}</span>
+          </div>
         </div>
-        <div className={styles.infoItem}>
-          <EmailIcon className={styles.icon} />
-          <span>{anonEmail}</span>
-        </div>
-      </div>
-    </BaseCard>
+      </BaseCard>
+      <h2 className={styles.subtitle}>Schnellzugriff</h2>
+    </>
   );
 };
 

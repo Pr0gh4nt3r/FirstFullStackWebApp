@@ -1,6 +1,6 @@
 // Profile.tsx
 import React, { useEffect, useState } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import Spinner from "@/Components/Spinner/Spinner";
@@ -14,6 +14,7 @@ import styles from "./Account.module.scss";
 const Account: React.FC = () => {
   const [account, setAccount] = useState<IAccountDocument | null>(null);
   const [loading, setLoading] = useState(true);
+  const location = useLocation();
 
   useEffect(() => {
     const fetchAccount = async () => {
@@ -42,9 +43,10 @@ const Account: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // if (loading) return <div className="loading">Loading...</div>;
   if (!account && !loading) return <Navigate to="/" />; // kein User? zurück zum Login
 
+  const isRootAccountPage = location.pathname === "/account";
+  const isSecurityPage = location.pathname === "/account/security";
   const [local, domain] = account?.email.split("@") || ["", ""];
   const anonEmail = `${local.charAt(0)}•••@${domain}`;
   const memberSince = new Date(account?.createdAt || "").toLocaleDateString(
@@ -65,16 +67,17 @@ const Account: React.FC = () => {
       )}
       <Sidebar />
       <main className={styles.accountMain}>
-        <h1 className={styles.mainTitle}>Konto</h1>
-        <h2 className={styles.subtitle}>Details zum Konto</h2>
-        <AccountCard
-          userName={account?.userName || ""}
-          anonEmail={anonEmail}
-          memberSince={memberSince}
-        />
-
-        <h2 className={styles.subtitle}>Schnellzugriff</h2>
-        <ShortcutCard />
+        {isRootAccountPage && (
+          <>
+            <AccountCard
+              userName={account?.userName || ""}
+              anonEmail={anonEmail}
+              memberSince={memberSince}
+            />
+            <ShortcutCard />
+          </>
+        )}
+        {/* {isSecurityPage && <Security />} */}
       </main>
     </div>
   );

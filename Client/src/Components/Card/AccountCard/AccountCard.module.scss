@@ -1,6 +1,18 @@
 @use "@/Styles/variables" as *;
 @use "@/Styles/mixins" as *;
 
+.mainTitle {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  color: $color-title;
+}
+
+.subtitle {
+  font-size: 1.25rem;
+  margin: 2rem 0 1rem;
+  color: $color-subtitle;
+}
+
 .accountCard {
   position: relative;
 

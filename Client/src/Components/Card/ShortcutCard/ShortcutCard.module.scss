@@ -11,7 +11,6 @@
     font-weight: 600;
 
     li {
-      @include icon-spacing;
       margin: 0.5rem 0;
       padding: 0.5rem 0;
       cursor: pointer;
@@ -63,12 +62,9 @@
 }
 
 .iconWrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  @include icon-spacing;
   width: 2.5rem;
   height: 2.5rem;
-  padding-right: 0.75rem;
   color: $color-muted;
 }
 
