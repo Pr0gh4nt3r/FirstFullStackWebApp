@@ -14,6 +14,7 @@ const Sidebar: React.FC = () => {
           <li>
             <NavLink
               to="/account"
+              end
               className={({ isActive }) => (isActive ? "active" : "")}
             >
               <HomeIcon className="icon" />
@@ -23,6 +24,7 @@ const Sidebar: React.FC = () => {
           <li>
             <NavLink
               to="/account/security"
+              end
               className={({ isActive }) => (isActive ? "active" : "")}
             >
               <SecurityIcon className="icon" />

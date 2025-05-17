@@ -19,7 +19,7 @@ const AppRoutes: React.FC = () => {
       <Routes>
         <Route path="/" element={<LoginSignup />} />
         <Route path="/account" element={<Account />} />
-        {/* <Route path="/account/security" element={<Security />} /> */}
+        <Route path="/account/security" element={<Account />} />
         {/* <Route path="/email" element={<Email/>} /> */}
         {/* <Route path="/password" element={<Password />} /> */}
         {/* <Route path="/settings" element={<Settings />} /> */}
