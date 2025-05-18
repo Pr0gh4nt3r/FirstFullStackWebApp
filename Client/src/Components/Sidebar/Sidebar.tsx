@@ -4,7 +4,12 @@ import { NavLink } from "react-router-dom";
 
 import "./Sidebar.scss";
 
-import { HomeIcon, SecurityIcon } from "@/Components/Assets";
+import {
+  HomeIcon,
+  HomeIconFilled,
+  SecurityIcon,
+  SecurityIconFilled,
+} from "@/Components/Assets";
 
 const Sidebar: React.FC = () => {
   return (
@@ -17,8 +22,16 @@ const Sidebar: React.FC = () => {
               end
               className={({ isActive }) => (isActive ? "active" : "")}
             >
-              <HomeIcon className="icon" />
-              Übersicht
+              {({ isActive }) => (
+                <>
+                  {isActive ? (
+                    <HomeIconFilled className="icon" />
+                  ) : (
+                    <HomeIcon className="icon" />
+                  )}
+                  Übersicht
+                </>
+              )}
             </NavLink>
           </li>
           <li>
@@ -27,8 +40,16 @@ const Sidebar: React.FC = () => {
               end
               className={({ isActive }) => (isActive ? "active" : "")}
             >
-              <SecurityIcon className="icon" />
-              Sicherheit
+              {({ isActive }) => (
+                <>
+                  {isActive ? (
+                    <SecurityIconFilled className="icon" />
+                  ) : (
+                    <SecurityIcon className="icon" />
+                  )}
+                  Sicherheit
+                </>
+              )}
             </NavLink>
           </li>
         </ul>

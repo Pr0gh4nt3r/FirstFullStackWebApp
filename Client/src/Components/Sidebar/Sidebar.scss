@@ -29,26 +29,12 @@
 
           .icon {
             margin-right: 0.75rem;
-            fill: #666;
+            fill: currentColor;
             transition: fill 0.2s;
           }
 
           &:hover {
-            background: rgba(0, 115, 230, 0.05);
-            color: $color-primary;
-
-            .icon {
-              fill: $color-primary;
-            }
-          }
-
-          &.active {
-            background: $color-primary;
-            color: $color-white;
-
-            .icon {
-              fill: $color-white;
-            }
+            background: $color-hover-bg;
           }
         }
       }

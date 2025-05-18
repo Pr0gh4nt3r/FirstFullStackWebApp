@@ -22,7 +22,15 @@ const ShortcutCard: React.FC = () => {
                     <PasswordIcon />
                   </span>
                 </span>
-                <span className={styles.content}>Passwort aktualisieren</span>
+                <span className={styles.content}>
+                  <div className={styles.layoutContainerWrapper}>
+                    <div className={styles.layoutContainer}>
+                      <div className={styles.layoutItem}>
+                        Passwort aktualisieren
+                      </div>
+                    </div>
+                  </div>
+                </span>
               </span>
               <span className={styles.supplemental}>
                 <ChevronRightIcon />
@@ -39,7 +47,15 @@ const ShortcutCard: React.FC = () => {
                     <SettingsIcon />
                   </span>
                 </span>
-                <span className={styles.content}>Einstellungen bearbeiten</span>
+                <span className={styles.content}>
+                  <div className={styles.layoutContainerWrapper}>
+                    <div className={styles.layoutContainer}>
+                      <div className={styles.layoutItem}>
+                        Einstellungen bearbeiten
+                      </div>
+                    </div>
+                  </div>
+                </span>
               </span>
               <span className={styles.supplemental}>
                 <ChevronRightIcon />

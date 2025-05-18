@@ -11,7 +11,6 @@
     font-weight: 600;
 
     li {
-      margin: 0.5rem 0;
       padding: 0.5rem 0;
       cursor: pointer;
       background-color: $color-white;
@@ -21,16 +20,12 @@
       list-style: none;
       position: relative;
 
-      &:hover {
-        background: rgba(0, 115, 230, 0.05);
-      }
-
       &:not(:first-of-type)::before {
         position: absolute;
         content: "";
         border-top: $devider;
         width: calc(100% - 32px);
-        top: -0.25rem;
+        top: 0;
         left: 1rem;
         right: 1rem;
       }
@@ -38,10 +33,14 @@
       a {
         margin: 0.25rem;
         text-decoration: none;
-        width: 100%;
         display: flex;
         align-items: center;
         background: transparent;
+        border-radius: 0.25rem;
+
+        &:hover {
+          background: $color-hover-bg;
+        }
       }
     }
   }
@@ -73,6 +72,17 @@
   align-items: center;
   margin-left: 0.25rem;
   margin-right: 0.5rem;
+  width: 100%;
+}
+
+.layoutContainerWrapper {
+  display: inherit;
+  height: auto;
+  width: 100%;
+}
+
+.layoutContainer {
+  padding: 0.75rem 0;
   width: 100%;
 }
 

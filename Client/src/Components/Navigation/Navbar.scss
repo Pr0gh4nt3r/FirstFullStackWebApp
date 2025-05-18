@@ -31,7 +31,10 @@
     }
 
     &:hover {
-      opacity: 0.8;
+      color: $color-accent-secondary;
+      & .navbar__icon {
+        fill: $color-accent-secondary;
+      }
     }
   }
 }
