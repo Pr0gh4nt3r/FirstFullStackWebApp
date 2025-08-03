@@ -1,14 +1,20 @@
-import { ReportHandler } from 'web-vitals';
+// src/reportWebVitals.ts
+import type { Metric } from "web-vitals";
+import * as webVitals from "web-vitals";
 
-const reportWebVitals = (onPerfEntry?: ReportHandler) => {
-  if (onPerfEntry && onPerfEntry instanceof Function) {
-    import('web-vitals').then(({ getCLS, getFID, getFCP, getLCP, getTTFB }) => {
-      getCLS(onPerfEntry);
-      getFID(onPerfEntry);
-      getFCP(onPerfEntry);
-      getLCP(onPerfEntry);
-      getTTFB(onPerfEntry);
-    });
+/**
+ * Führt die einzelnen Web‑Vitals‑Messungen aus und ruft
+ * die gegebene Callback‑Funktion mit dem jeweiligen Metric‑Objekt auf.
+ *
+ * @param onPerfEntry - Optionaler Callback (metric: Metric) => void
+ */
+const reportWebVitals = (onPerfEntry?: (metric: Metric) => void): void => {
+  if (typeof onPerfEntry === "function") {
+    webVitals.onCLS(onPerfEntry);
+    webVitals.onINP(onPerfEntry);
+    webVitals.onFCP(onPerfEntry);
+    webVitals.onLCP(onPerfEntry);
+    webVitals.onTTFB(onPerfEntry);
   }
 };
 

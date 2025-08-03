@@ -6,7 +6,8 @@ import App from "./App";
 import LoginSignup from "@/Components/LoginSignup/LoginSignup";
 import Account from "@/Components/Account/Account";
 import Navbar from "@/Components/Navigation/Navbar";
-import { AuthProvider } from "./Context/AuthContext";
+import { AuthProvider } from "@/Context/AuthContext";
+import { afterEach, describe, expect, it, jest } from "@jest/globals";
 
 // Hilfsfunktion, um sessionStorage zu mocken
 function mockSessionStorage(token: string | null) {
@@ -38,9 +39,9 @@ describe("App Routing & Navbar", () => {
     );
 
     // LoginSignup soll im Dokument sein
-    expect(screen.getByText(/Sign Up|Login/i)).toBeInTheDocument();
+    expect(screen.getByText(/Sign Up|Login/i)).toBeDefined();
     // Navbar nicht
-    expect(screen.queryByRole("navigation")).not.toBeInTheDocument();
+    expect(screen.queryByRole("navigation")).toBeNull();
   });
 
   it("zeigt Account und Navbar auf '/account' wenn eingeloggt", async () => {
@@ -55,9 +56,9 @@ describe("App Routing & Navbar", () => {
     );
 
     // Navbar vorhanden
-    expect(screen.getByRole("navigation")).toBeInTheDocument();
+    expect(screen.getByRole("navigation")).toBeDefined();
     // Account-Komponente wird gemountet, prüfe ein Element darin
-    expect(await screen.findByText(/Details zum Konto/i)).toBeInTheDocument();
+    expect(await screen.findByText(/Details zum Konto/i)).toBeDefined();
   });
 
   it("leitet nicht-eingeloggte User von '/account' zurück auf '/'", () => {
@@ -72,8 +73,8 @@ describe("App Routing & Navbar", () => {
     );
 
     // Nach Redirect sollte LoginSignup wieder sichtbar sein
-    expect(screen.getByText(/Sign Up|Login/i)).toBeInTheDocument();
+    expect(screen.getByText(/Sign Up|Login/i)).toBeDefined();
     // Navbar nicht
-    expect(screen.queryByRole("navigation")).not.toBeInTheDocument();
+    expect(screen.queryByRole("navigation")).toBeNull();
   });
 });

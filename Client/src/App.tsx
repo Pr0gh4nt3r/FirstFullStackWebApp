@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useLocation } from "react-router";
 
 import LoginSignup from "./Components/LoginSignup/LoginSignup";
 import Account from "./Components/Account/Account";

@@ -7,8 +7,5 @@
   "workspaces": [
     "Server",
     "Client"
-  ],
-  "dependencies": {
-    "react-toastify": "^11.0.5"
-  }
+  ]
 }
