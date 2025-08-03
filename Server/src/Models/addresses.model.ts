@@ -1,6 +1,6 @@
 import mongoose, { Schema, Types } from "mongoose";
 
-import { IAddressDocument } from "../Interfaces/address.interface.js";
+import { IAddressDocument } from "../Interfaces/addresses.interface.js";
 
 // Mongoose Address Schema
 export const AddressSchema = new Schema<IAddressDocument>(

@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import Spinner from "@/Components/Spinner/Spinner";
 import Sidebar from "@/Components/Sidebar/Sidebar";
 import { AccountCard, ShortcutCard } from "@/Components/Card";
-import { IAccountDocument } from "../../../../Server/src/Interfaces/account.interface";
+import { IAccountDocument } from "../../../../Server/src/Interfaces/accounts.interface";
 import { getUserFromDB } from "@/Helpers/data.helper";
 
 import styles from "./Account.module.scss";
@@ -77,6 +77,7 @@ const Account: React.FC = () => {
             <ShortcutCard />
           </>
         )}
+        {/*TODO: Implement the Security component */}
         {/* {isSecurityPage && <Security />} */}
       </main>
     </div>

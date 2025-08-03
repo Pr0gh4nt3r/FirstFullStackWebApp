@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 
-import AddressModel from "../Models/address.model.js";
+import AddressModel from "../Models/addresses.model.js";
 import mongoose from "mongoose";
 
 export const getAddress = async (req: Request, res: Response) => {

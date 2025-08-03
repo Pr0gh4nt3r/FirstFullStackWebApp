@@ -1,22 +1,22 @@
 import express from "express";
 
 import {
-  getUserWithAddresses,
-  getUserWithPersonalData,
+  getUserWithFullPersonalData,
+  getUserWithPersonalDataAndPhones,
 } from "../Controllers/aggregation.controller.js";
 import { validateToken } from "../Controllers/jwt.controller.js";
 
 const aggregationRouter = express.Router(); // Create a new router instance
 
 aggregationRouter.get(
-  "/account/:id/personal",
+  "/account/:id/personal/phones",
   validateToken,
-  getUserWithPersonalData
+  getUserWithPersonalDataAndPhones
 );
 aggregationRouter.get(
-  "/account/:id/address",
+  "/account/:id/personal/full",
   validateToken,
-  getUserWithAddresses
+  getUserWithFullPersonalData
 );
 
 export default aggregationRouter;

@@ -58,8 +58,6 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
         } catch {
           await refresh();
         }
-      } else {
-        await refresh();
       }
       // navigation logic
       if (accessToken) {

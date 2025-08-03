@@ -1,10 +1,15 @@
 import { Request, Response } from "express";
 import mongoose from "mongoose";
 
-import AccountModel from "../Models/account.model.js";
-import { IAccountDocument } from "../Interfaces/account.interface.js";
+import AccountModel from "../Models/accounts.model.js";
+import { IAccountDocument } from "../Interfaces/accounts.interface.js";
 
-export const getUserWithPersonalData = async (req: Request, res: Response) => {
+// TODO: Endpunkt für Aggregation, um User mit personalData zu bekommen
+
+export const getUserWithPersonalDataAndPhones = async (
+  req: Request,
+  res: Response
+) => {
   const { id } = req.params; // get user id from request params
   try {
     const accountWithPersonalData: IAccountDocument[] | null =
@@ -111,7 +116,12 @@ export const getUserWithPersonalData = async (req: Request, res: Response) => {
   }
 };
 
-export const getUserWithAddresses = async (req: Request, res: Response) => {
+// TODO: Endpunkt für Aggregation, um User mit personalData ohne Phones, aber mit Adressen zu bekommen
+
+export const getUserWithFullPersonalData = async (
+  req: Request,
+  res: Response
+) => {
   const { id } = req.params;
   try {
     const accountWithAddresses: IAccountDocument[] | null =
