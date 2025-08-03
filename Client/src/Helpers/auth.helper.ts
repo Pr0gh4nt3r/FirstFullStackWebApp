@@ -1,6 +1,6 @@
 import { jwtDecode } from "jwt-decode";
 
-import { IAccountDocument } from "../../../Server/src/Interfaces/account.interface";
+import { IAccountDocument } from "../../../Server/src/Interfaces/accounts.interface";
 import { ILoginResponse } from "@/Interfaces/loginResponse.interface.ts";
 import { IDecodedToken } from "@/Interfaces/token.interface";
 
@@ -58,7 +58,7 @@ export const logout = async () => {
 
   // Call API to delete the refresh token
   const response = await fetch(`${authURL}/logout`, {
-    method: "DELETE",
+    method: "PATCH",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,

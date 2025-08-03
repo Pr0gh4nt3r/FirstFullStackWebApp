@@ -3,8 +3,8 @@ import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import { jwtDecode } from "jwt-decode";
 
-import AccountModel from "../Models/account.model.js";
-import { IAccountDocument } from "../Interfaces/account.interface.js";
+import AccountModel from "../Models/accounts.model.js";
+import { IAccountDocument } from "../Interfaces/accounts.interface.js";
 
 export const getAccount = async (req: Request, res: Response) => {
   const authHeader = req.headers["authorization"]; // get the authorization header
@@ -23,6 +23,7 @@ export const getAccount = async (req: Request, res: Response) => {
       {
         $project: {
           _id: 1,
+          role: 1,
           userName: 1,
           email: 1,
           password: 1,

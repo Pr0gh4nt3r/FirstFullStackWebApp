@@ -3,12 +3,12 @@ import dotenv from "dotenv";
 import express, { json, urlencoded } from "express";
 import * as mongoose from "mongoose";
 
-import accountRouter from "./Routers/account.router.js";
-import addressRouter from "./Routers/address.router.js";
+import accountRouter from "./Routers/accounts.router.js";
+import addressRouter from "./Routers/addresses.router.js";
 import personalDataRouter from "./Routers/personalData.router.js";
-import aggregationRouter from "./Routers/aggregation.router.js";
+import aggregationRouter from "./Routers/aggregations.router.js";
 import { getMongoDbIP, getMongoDbPort } from "./Helpers/db.helper.js";
-import phoneRouter from "./Routers/phone.router.js";
+import phoneRouter from "./Routers/phones.router.js";
 
 dotenv.config();
 

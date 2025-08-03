@@ -1,9 +1,14 @@
 import mongoose, { Schema, Types } from "mongoose";
-import { IAccountDocument } from "../Interfaces/account.interface.js";
+import { IAccountDocument } from "../Interfaces/accounts.interface.js";
 
 // Mongoose User Schema
 const AccountSchema = new Schema<IAccountDocument>(
   {
+    role: {
+      type: String,
+      enum: ["user", "admin"],
+      default: "user",
+    }, // default "user"
     userName: { type: String, required: true, unique: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
