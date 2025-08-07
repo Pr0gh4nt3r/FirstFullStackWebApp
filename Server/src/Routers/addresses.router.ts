@@ -6,13 +6,13 @@ import {
   updateAddress,
   deleteAddress,
 } from "../Controllers/address.controller.js";
-import { validateToken } from "../Controllers/jwt.controller.js";
+import { validateAccessToken } from "../Controllers/jwt.controller.js";
 
 const addressRouter = express.Router(); // Create a new router instance
 
-addressRouter.get("/:id", validateToken, getAddress);
-addressRouter.post("/", validateToken, createAddress);
-addressRouter.patch("/:id", validateToken, updateAddress);
-addressRouter.delete("/:id", validateToken, deleteAddress);
+addressRouter.get("/:id", validateAccessToken, getAddress);
+addressRouter.post("/", validateAccessToken, createAddress);
+addressRouter.patch("/:id", validateAccessToken, updateAddress);
+addressRouter.delete("/:id", validateAccessToken, deleteAddress);
 
 export default addressRouter;

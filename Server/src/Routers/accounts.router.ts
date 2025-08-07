@@ -8,23 +8,23 @@ import {
   addPersonalData,
   removePersonalData,
 } from "../Controllers/account.controller.js";
-import { validateToken } from "../Controllers/jwt.controller.js";
+import { validateAccessToken } from "../Controllers/jwt.controller.js";
 
 const userRouter = express.Router(); // Create a new router instance
 
-userRouter.get("/account", validateToken, getAccount);
+userRouter.get("/account", validateAccessToken, getAccount);
 userRouter.post("/signup", createAccount);
-userRouter.patch("/account/:id", validateToken, updateAccount);
+userRouter.patch("/account/:id", validateAccessToken, updateAccount);
 userRouter.patch(
   "/account/:id/personaldata/add",
-  validateToken,
+  validateAccessToken,
   addPersonalData
 );
 userRouter.patch(
   "/account/:id/personaldata/remove",
-  validateToken,
+  validateAccessToken,
   removePersonalData
 );
-userRouter.delete("/account/:id", validateToken, deleteAccount);
+userRouter.delete("/account/:id", validateAccessToken, deleteAccount);
 
 export default userRouter;

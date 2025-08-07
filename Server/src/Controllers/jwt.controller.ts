@@ -84,9 +84,8 @@ export const authenticateUser = async (req: any, res: any) => {
  * @param res - The response object to send the result.
  * @param next - The next middleware function to call if validation is successful.
  */
-export const validateToken = async (req: any, res: any, next: any) => {
-  const authHeader = req.headers["authorization"];
-  const token = authHeader && authHeader.split(" ")[1];
+export const validateAccessToken = async (req: any, res: any, next: any) => {
+  const token: string = req.headers.authorization?.split(" ")[1]; // getting the access token from the headers
 
   if (!token) return res.status(401);
 
@@ -176,8 +175,14 @@ export const refreshToken = async (req: any, res: any) => {
  */
 export const logoutUser = async (req: any, res: any) => {
   const refreshToken: string = req.cookies.refreshToken; // getting the refresh token from the cookies
+  const account: IAccountDocument = req.account; // getting the account from the request object
 
-  if (!refreshToken) return res.sendStatus(401); // return unauthorized if there is no token
+  if (!refreshToken && account) {
+    // If there is no refresh token but an account, return 204 (No Content)
+    return res.sendStatus(204);
+  }
+
+  if (!refreshToken) return res.sendStatus(401);
 
   if (!refreshTokenModel.findOne({ token: refreshToken }))
     return res.sendStatus(403); // return forbidden if the given token not exists

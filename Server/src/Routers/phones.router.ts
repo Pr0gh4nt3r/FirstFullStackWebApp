@@ -6,13 +6,13 @@ import {
   getPhone,
   updatePhone,
 } from "../Controllers/phone.controller.js";
-import { validateToken } from "../Controllers/jwt.controller.js";
+import { validateAccessToken } from "../Controllers/jwt.controller.js";
 
 const phoneRouter = express.Router(); // Create a new router instance
 
-phoneRouter.get("/:id", validateToken, getPhone);
-phoneRouter.post("/", validateToken, createPhone);
-phoneRouter.patch("/:id", validateToken, updatePhone);
-phoneRouter.delete("/:id", validateToken, deletePhone);
+phoneRouter.get("/:id", validateAccessToken, getPhone);
+phoneRouter.post("/", validateAccessToken, createPhone);
+phoneRouter.patch("/:id", validateAccessToken, updatePhone);
+phoneRouter.delete("/:id", validateAccessToken, deletePhone);
 
 export default phoneRouter;
